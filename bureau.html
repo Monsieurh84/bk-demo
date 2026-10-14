@@ -107,7 +107,7 @@
 </head>
 <body>
 <div class="demo-bar"><span><b>Démo</b> · Écran du bureau (Mac) · données fictives</span>
-  <nav><a href="index.html">Accueil démo</a><a href="site.html">Site vitrine</a><a href="bureau.html" aria-current="page">Bureau</a><a href="technicien.html">Technicien (iPad)</a></nav></div>
+  <nav><a href="index.html">Accueil démo</a><a href="site.html">Site vitrine</a><a href="bureau.html" aria-current="page">Bureau</a><a href="technicien.html">Technicien</a></nav></div>
 
 <div class="app">
   <aside class="side">
@@ -164,7 +164,7 @@ function planning(){
     <button class="btn orange" id="new">+ Nouvelle intervention</button></div>
     <div class="legend">${s.techs.map(t=>`<span><i style="background:${t.couleur}"></i>${t.nom}</span>`).join('')}<span>👥 binôme</span><span>↻ récurrente</span><span>📄 devis joint</span></div>`;
   if(mode==='semaine'){
-    html += `<div class="hint">💡 <span>Glissez une intervention vers un autre jour ou un autre technicien pour la reprogrammer. Le technicien la voit aussitôt sur son iPad.</span></div><div class="grid"><div class="gh"></div>`;
+    html += `<div class="hint">💡 <span>Glissez une intervention vers un autre jour ou un autre technicien pour la reprogrammer. Le technicien la voit aussitôt sur son iPhone ou iPad.</span></div><div class="grid"><div class="gh"></div>`;
     days.forEach(d=> html += `<div class="gh ${d===today?'today':''}">${d===today?'<span>'+BK.label(d)+'</span>':BK.label(d)}</div>`);
     s.techs.forEach(t=>{
       html += `<div class="tn"><i style="background:${t.couleur}"></i>${t.nom}</div>`;
@@ -264,7 +264,7 @@ function openForm(i, demande){
     if(isNew) s.interventions.push(i);
     if(demande){ const d=s.demandes.find(x=>x.id===demande.id); if(d) d.traitee=true; }
     BK.save(s); closeDrawer(); view='planning'; mode='semaine'; weekStart=BK.monday(new Date(i.date+'T12:00')); render();
-    toast(`Planifiée pour ${techs.map(x=>BK.tech(x).nom).join(' + ')} — visible sur son iPad`);
+    toast(`Planifiée pour ${techs.map(x=>BK.tech(x).nom).join(' + ')} — visible sur son iPhone/iPad`);
   };
 }
 
