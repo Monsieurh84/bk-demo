@@ -149,7 +149,7 @@ function cardHtml(i, techId){
   const bin = i.techs.length>1 ? `<span title="Binôme : ${E(i.techs.map(x=>BK.tech(x).nom).join(' + '))}">👥</span>` : '';
   const rec = i.recurrent ? '<span title="Contrat d’entretien récurrent">↻</span>' : '';
   const pdf = i.devisPdf ? '<span title="Devis client joint (bureau)">📄</span>' : '';
-  const sc = {planifiee:'#1565D8',encours:'#B45309',controle:'#F26B1D',cloturee:'#0E9F6E'}[i.statut];
+  const sc = {planifiee:'#1565D8',enroute:'#7C3AED',encours:'#B45309',controle:'#F26B1D',cloturee:'#0E9F6E'}[i.statut];
   return `<div class="card ${i.type==='interne'?'interne':''} ${i.statut==='cloturee'?'cloturee':''}" draggable="true" data-id="${i.id}" data-tech="${techId}" style="--c:${t.couleur};--sc:${sc}">
     <div class="t"><span class="dot" title="${BK.STATUTS[i.statut]}"></span>${BK.hh(i.start)}–${BK.endTime(i.start,i.dur)}<span class="ico">${bin}${rec}${pdf}</span></div>
     <div class="a">${i.type==='interne'?'Tâche interne':E(i.ville)}</div>
@@ -305,6 +305,7 @@ $('#reset').onclick=e=>{ e.preventDefault(); BK.reset(); render(); toast('Démo 
 BK.onChange(()=>{ render(); toast('Mise à jour reçue en temps réel'); });
 const h=location.hash.slice(1); if(['planning','controle','demandes','historique'].includes(h)) view=h;
 render();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
 </html>

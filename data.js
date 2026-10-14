@@ -111,6 +111,6 @@
     onChange: f => listeners.push(f),
     uid: () => 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
     esc: s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])),
-    STATUTS: { planifiee: 'Planifiée', encours: 'En cours', controle: 'À contrôler', cloturee: 'Clôturée' },
+    STATUTS: { planifiee: 'Planifiée', enroute: 'En route', encours: 'En cours', controle: 'À contrôler', cloturee: 'Clôturée' },
   };
 })();

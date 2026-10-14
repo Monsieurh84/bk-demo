@@ -4,225 +4,408 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
-<meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0B2340">
-<title>Technicien · BK+ (démo)</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BK+">
+<title>BK+ Interventions · Technicien (démo)</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="favicon.svg">
 <link rel="stylesheet" href="app.css">
 <style>
-body{background:#DCE3EC}
-.stage{display:flex;justify-content:center;align-items:flex-start;padding:24px 16px 48px;gap:28px;flex-wrap:wrap}
-.ipad{width:820px;max-width:100%;height:1080px;max-height:calc(100vh - 110px);min-height:640px;background:#111;border-radius:42px;padding:18px;box-shadow:0 30px 80px rgba(11,35,64,.35)}
-.screen{background:#F3F5F8;border-radius:26px;height:100%;overflow:hidden;display:flex;flex-direction:column;position:relative}
-.aside{max-width:300px;color:var(--navy);font-size:15px;line-height:1.5}
-.aside h2{font-size:20px;margin:6px 0 10px}
+html,body{height:100%}
+body{background:#D9E0EA;overscroll-behavior:none}
+/* ---------- Présentation sur ordinateur ---------- */
+.stage{display:flex;justify-content:center;align-items:flex-start;gap:36px;padding:22px 16px 40px;flex-wrap:wrap}
+.device{background:#0D0F12;box-shadow:0 30px 80px rgba(11,35,64,.35),inset 0 0 0 2px #2A2F37;position:relative;transition:width .35s,height .35s,border-radius .35s}
+.device.ipad{width:820px;height:min(1080px,calc(100vh - 100px));min-height:620px;border-radius:44px;padding:18px}
+.device.iphone{width:393px;height:min(852px,calc(100vh - 100px));min-height:640px;border-radius:58px;padding:13px}
+.device.iphone::before{content:'';position:absolute;top:24px;left:50%;transform:translateX(-50%);width:120px;height:34px;border-radius:20px;background:#000;z-index:5}
+.screen{background:var(--bg);height:100%;overflow:hidden;display:flex;flex-direction:column;position:relative;container-type:inline-size;container-name:scr}
+.device.ipad .screen{border-radius:28px}
+.device.iphone .screen{border-radius:46px}
+.device.iphone .top{padding-top:56px}
+.aside{width:310px;color:var(--navy);font-size:15px;line-height:1.5}
+.aside h2{font-size:20px;margin:4px 0 12px}
+.switch{display:grid;grid-template-columns:1fr 1fr;background:#fff;border-radius:14px;padding:4px;margin-bottom:18px;box-shadow:var(--sh)}
+.switch button{border:0;background:none;height:46px;border-radius:10px;font-weight:800;font-size:15px;color:var(--mute);display:flex;align-items:center;justify-content:center;gap:8px}
+.switch button.on{background:var(--navy);color:#fff}
 .aside ol{padding-left:20px;margin:0 0 16px}
 .aside li{margin-bottom:8px}
 .aside .btn{width:100%;margin-bottom:8px}
+.aside .card{background:#fff;border-radius:16px;padding:14px 16px;margin-bottom:14px;box-shadow:var(--sh)}
+.aside .card h3{margin:0 0 8px;font-size:15px}
+.whos{display:flex;flex-wrap:wrap;gap:6px}
+.whos button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:6px 10px;font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px}
+.whos button.on{border-color:var(--navy)}
+.whos i{width:10px;height:10px;border-radius:50%}
+.qr{display:flex;gap:12px;align-items:center;font-size:13px;color:var(--mute)}
+.qr img{width:96px;height:96px;border-radius:8px;background:#fff}
+/* Sur un vrai iPhone / iPad : plein écran, sans cadre */
+body.native .demo-bar,body.native .aside{display:none}
+body.native .stage{padding:0;display:block}
+body.native .device{width:100%!important;height:100vh!important;height:100dvh!important;min-height:0;border-radius:0!important;padding:0!important;box-shadow:none;background:var(--bg)}
+body.native .device::before{display:none}
+body.native .screen{border-radius:0!important}
+body.native .top{padding-top:calc(14px + env(safe-area-inset-top))!important}
 @media (max-width:1180px){.aside{display:none}}
-@media (max-width:860px){.stage{padding:0}.ipad{border-radius:0;padding:0;height:calc(100vh - 38px);max-height:none;min-height:0;box-shadow:none}.screen{border-radius:0}}
-/* Barre du haut */
-.top{background:var(--navy);color:#fff;padding:16px 22px;display:flex;align-items:center;gap:14px}
-.top .back{width:52px;height:52px;border-radius:14px;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:28px;line-height:1}
-.top h1{font-size:22px;margin:0;font-weight:800}
-.top small{display:block;font-size:14px;color:#AFC3DB;font-weight:600}
-.sync{margin-left:auto;display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;padding:10px 14px;border-radius:999px;background:rgba(14,159,110,.18);color:#7BE3B9;border:0}
-.sync i{width:10px;height:10px;border-radius:50%;background:currentColor}
-.sync.off{background:rgba(242,107,29,.2);color:#FFB98A}
+@media (max-width:860px){body:not(.native) .stage{padding:0}body:not(.native) .device{width:100%!important;height:calc(100dvh - 38px)!important;min-height:0;border-radius:0!important;padding:0!important}body:not(.native) .device::before{display:none}body:not(.native) .screen{border-radius:0!important}body:not(.native) .top{padding-top:14px!important}}
+
+/* ---------- Application ---------- */
+.top{background:var(--navy);color:#fff;padding:16px 22px;display:flex;align-items:center;gap:12px;flex:none}
+.top .back{width:56px;height:56px;border-radius:16px;border:0;background:rgba(255,255,255,.13);color:#fff;font-size:32px;line-height:1;flex:none}
+.top .ttl{min-width:0;flex:1}
+.top h1{font-size:23px;margin:0;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top small{display:block;font-size:15px;color:#AFC3DB;font-weight:600}
+.sync{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;height:44px;padding:0 14px;border-radius:999px;background:rgba(14,159,110,.2);color:#7BE3B9;border:0;white-space:nowrap}
+.sync i{width:10px;height:10px;border-radius:50%;background:currentColor;flex:none}
+.sync.off{background:rgba(242,107,29,.22);color:#FFC29E}
 .sync.busy i{animation:pulse 1s infinite}
+.sun{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.13);color:#fff;font-size:20px;flex:none}
 @keyframes pulse{50%{opacity:.2}}
-.scroll{flex:1;overflow:auto;padding:20px 22px 30px;-webkit-overflow-scrolling:touch}
-.tabs{display:flex;gap:10px;margin-bottom:18px}
-.tabs button{flex:1;height:58px;border-radius:16px;border:2px solid var(--line);background:#fff;font-size:19px;font-weight:800;color:var(--mute)}
+.scroll{flex:1;overflow:auto;padding:18px 20px 28px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.next{background:linear-gradient(135deg,#123B6B,#0B2340);color:#fff;border-radius:24px;padding:20px;margin-bottom:16px;box-shadow:0 10px 30px rgba(11,35,64,.25)}
+.next .lbl{font-size:14px;font-weight:800;color:#FFB98A;text-transform:uppercase;letter-spacing:.06em}
+.next .ad{font-size:25px;font-weight:800;margin:6px 0 2px;line-height:1.2}
+.next .vi{color:#C9D6E8;font-size:17px;font-weight:600}
+.next .row2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px}
+.next .row2 a,.next .row2 button{height:64px;border-radius:16px;border:0;font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;color:#fff;background:rgba(255,255,255,.14)}
+.next .row2 .go{background:var(--orange)}
+.next .row2 svg{width:24px;height:24px}
+.prog{display:flex;align-items:center;gap:12px;margin:4px 2px 16px;font-weight:800;color:var(--mute);font-size:16px}
+.prog .bar{flex:1;height:12px;background:#E1E7EF;border-radius:6px;overflow:hidden}
+.prog .bar i{display:block;height:100%;background:var(--ok);border-radius:6px;transition:width .4s}
+.tabs{display:flex;gap:10px;margin-bottom:16px}
+.tabs button{flex:1;height:60px;border-radius:18px;border:2px solid var(--line);background:#fff;font-size:19px;font-weight:800;color:var(--mute)}
 .tabs button.on{border-color:var(--navy);background:var(--navy);color:#fff}
-.daytitle{font-size:16px;font-weight:800;color:var(--mute);text-transform:uppercase;letter-spacing:.05em;margin:18px 4px 10px}
-.job{display:flex;align-items:stretch;gap:16px;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:20px;padding:18px 18px 18px 0;margin-bottom:14px;position:relative;overflow:hidden}
-.job::before{content:'';width:8px;background:var(--sc);flex:none}
-.job .h{font-size:26px;font-weight:800;min-width:92px;color:var(--navy)}
-.job .h small{display:block;font-size:15px;color:var(--mute);font-weight:700}
+.daytitle{font-size:15px;font-weight:800;color:var(--mute);text-transform:uppercase;letter-spacing:.05em;margin:20px 4px 10px}
+.job{display:flex;align-items:center;gap:16px;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:22px;padding:18px 16px 18px 0;margin-bottom:12px;overflow:hidden;min-height:96px}
+.job::before{content:'';width:8px;align-self:stretch;background:var(--sc);flex:none;margin:-18px 0;border-radius:0 6px 6px 0}
+.job .h{font-size:26px;font-weight:800;min-width:88px;color:var(--navy);line-height:1.1}
+.job .h small{display:block;font-size:15px;color:var(--mute);font-weight:700;margin-top:3px}
 .job .b{flex:1;min-width:0}
 .job .ad{font-size:21px;font-weight:800;line-height:1.25}
-.job .vi{font-size:17px;color:var(--mute);font-weight:600;margin-top:2px}
-.job .st{align-self:center;font-size:15px;font-weight:800;padding:8px 14px;border-radius:999px;white-space:nowrap}
-.job .chev{align-self:center;font-size:30px;color:#9AA8BA;padding-right:4px}
-.job.done{opacity:.6}
-.st.planifiee{background:var(--blue-50);color:var(--blue)} .st.encours{background:var(--warn-50);color:var(--warn)} .st.controle{background:var(--ok-50);color:var(--ok)} .st.cloturee{background:var(--ok-50);color:var(--ok)}
-.int{background:#F1EEFF;border-color:#DCD5FF}
+.job .vi{font-size:16px;color:var(--mute);font-weight:600;margin-top:3px}
+.job .st{font-size:15px;font-weight:800;padding:8px 13px;border-radius:999px;white-space:nowrap}
+.job .chev{font-size:30px;color:#9AA8BA}
+.job.done{opacity:.55}
+.job.int{background:#F4F2FF;border-color:#E2DCFF}
+.st.planifiee{background:var(--blue-50);color:var(--blue)}.st.enroute{background:#F1EBFF;color:#6D28D9}.st.encours{background:var(--warn-50);color:var(--warn)}.st.controle,.st.cloturee{background:var(--ok-50);color:var(--ok)}
+.demo-who{margin-top:26px;padding-top:16px;border-top:1px dashed #C8D2DF}
+.demo-who p{margin:0 0 8px;font-size:14px;color:var(--mute);font-weight:700}
 /* Fiche */
-.big-actions{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
-.bigbtn{height:84px;border-radius:20px;border:0;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:12px;text-decoration:none;color:#fff}
-.bigbtn svg{width:30px;height:30px}
-.call{background:var(--ok)} .route{background:var(--blue)}
-.panel{background:#fff;border:2px solid var(--line);border-radius:20px;padding:18px 20px;margin-bottom:14px}
-.panel h3{margin:0 0 8px;font-size:15px;color:var(--mute);text-transform:uppercase;letter-spacing:.05em}
+.step{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:16px}
+.step div{text-align:center;font-size:13px;font-weight:800;color:#9AA8BA}
+.step div::before{content:'';display:block;height:8px;border-radius:4px;background:#DCE3EC;margin-bottom:6px}
+.step div.on{color:var(--navy)}
+.step div.on::before{background:var(--ok)}
+.addr{background:#fff;border:3px solid var(--navy);border-radius:22px;padding:18px 20px;margin-bottom:14px}
+.addr .a{font-size:27px;font-weight:800;line-height:1.2}
+.addr .v{font-size:19px;color:var(--mute);font-weight:700;margin-top:2px}
+.big-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.bigbtn{height:86px;border-radius:22px;border:0;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:12px;text-decoration:none;color:#fff}
+.bigbtn svg{width:30px;height:30px;flex:none}
+.call{background:var(--ok)}.route{background:var(--blue)}
+.primary-step{width:100%;height:92px;border-radius:24px;border:0;font-size:24px;font-weight:800;color:#fff;background:#6D28D9;display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px;box-shadow:0 8px 24px rgba(109,40,217,.3)}
+.primary-step.here{background:var(--warn);box-shadow:0 8px 24px rgba(180,83,9,.3)}
+.sms{display:flex;align-items:center;justify-content:center;gap:8px;height:60px;border-radius:18px;background:#fff;border:2px solid var(--line);font-weight:800;font-size:18px;text-decoration:none;color:var(--navy);margin-bottom:14px}
+.since{background:var(--warn-50);color:var(--warn);font-weight:800;border-radius:16px;padding:12px 16px;font-size:17px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.binome{display:inline-flex;align-items:center;gap:8px;background:#FFF1E8;color:var(--orange-d);font-weight:800;font-size:18px;padding:10px 16px;border-radius:999px;margin-bottom:14px}
+.panel{background:#fff;border:2px solid var(--line);border-radius:22px;padding:18px 20px;margin-bottom:14px}
+.panel h3{margin:0 0 10px;font-size:15px;color:var(--mute);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:8px}
 .panel p{margin:0;font-size:20px;line-height:1.4;font-weight:600}
-.facts{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;font-size:19px}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;font-size:19px;margin:0}
 .facts dt{color:var(--mute);font-weight:700}
 .facts dd{margin:0;font-weight:800}
-.photo-btn{width:100%;height:96px;border-radius:20px;border:3px dashed #9DB7DA;background:var(--blue-50);color:var(--blue);font-size:23px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer}
-.photo-btn svg{width:34px;height:34px}
+.hist{border-left:4px solid var(--ok);padding:4px 0 4px 14px;margin-top:12px}
+.hist b{font-size:17px}
+.hist div{font-size:17px;color:var(--ink);margin-top:4px;line-height:1.4}
+.hist .ph{display:flex;gap:8px;margin-top:8px}
+.hist .ph img{width:84px;height:63px;border-radius:10px;object-fit:cover}
+.photo-btn{width:100%;height:100px;border-radius:22px;border:3px dashed #9DB7DA;background:var(--blue-50);color:var(--blue);font-size:23px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer}
+.photo-btn svg{width:36px;height:36px}
 .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-.thumbs div{position:relative}
-.thumbs img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px}
-.thumbs button{position:absolute;top:6px;right:6px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:22px}
+.thumbs figure{position:relative;margin:0}
+.thumbs img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;display:block}
+.thumbs .rm{position:absolute;top:6px;right:6px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(0,0,0,.62);color:#fff;font-size:24px}
+.thumbs .tg{position:absolute;left:6px;bottom:6px;border:0;border-radius:999px;padding:6px 12px;font-weight:800;font-size:14px;background:rgba(255,255,255,.95);color:var(--navy)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chips button{height:48px;padding:0 16px;border-radius:999px;border:2px solid var(--line);background:#fff;font-weight:800;font-size:16px;color:var(--navy)}
+.chips button:active{background:var(--blue-50)}
 .cmt{display:flex;gap:10px}
-.cmt textarea{flex:1;min-height:120px;border:2px solid var(--line);border-radius:16px;padding:14px;font-size:19px;resize:vertical}
-.mic{width:84px;border-radius:16px;border:0;background:var(--navy);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-weight:800;font-size:14px}
-.mic svg{width:30px;height:30px}
+.cmt textarea{flex:1;min-height:130px;border:2px solid var(--line);border-radius:18px;padding:14px;font-size:19px;resize:vertical;line-height:1.4}
+.cmt textarea:focus{border-color:var(--blue);outline:none}
+.mic{width:92px;border-radius:18px;border:0;background:var(--navy);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-weight:800;font-size:15px;flex:none}
+.mic svg{width:32px;height:32px}
 .mic.rec{background:var(--err);animation:pulse 1.2s infinite}
-.validate{position:sticky;bottom:0;padding:14px 22px 20px;background:linear-gradient(transparent,#F3F5F8 24%)}
-.validate button{width:100%;height:90px;border-radius:22px;border:0;font-size:26px;font-weight:800;background:var(--orange);color:#fff;box-shadow:0 8px 24px rgba(242,107,29,.35)}
+.validate{flex:none;padding:12px 20px calc(16px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(11,35,64,.06)}
+.validate button{width:100%;height:84px;border-radius:22px;border:0;font-size:25px;font-weight:800;background:#9AA8BA;color:#fff;transition:background .2s}
 .validate button.ready{background:var(--ok);box-shadow:0 8px 24px rgba(14,159,110,.35)}
-.need{display:flex;gap:10px;justify-content:center;margin-bottom:10px;flex-wrap:wrap}
-.need span{font-size:16px;font-weight:800;padding:8px 14px;border-radius:999px;background:#fff;border:2px solid var(--line);color:var(--mute)}
+.need{display:flex;gap:8px;justify-content:center;margin-bottom:10px}
+.need span{font-size:16px;font-weight:800;padding:7px 14px;border-radius:999px;border:2px solid var(--line);color:var(--mute);white-space:nowrap}
 .need span.ok{border-color:var(--ok);color:var(--ok);background:var(--ok-50)}
-.alert{background:var(--err-50);color:var(--err);border-radius:16px;padding:16px 18px;font-size:19px;font-weight:800;margin-bottom:12px;display:none}
-.alert.show{display:block}
-.done-box{background:var(--ok-50);border:2px solid #A7E3C9;color:#065F46;border-radius:20px;padding:20px;font-size:20px;font-weight:800;text-align:center;margin-bottom:14px}
-.who{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
-.who button{height:50px;padding:0 16px;border-radius:14px;border:2px solid var(--line);background:#fff;font-weight:800;font-size:17px;display:flex;align-items:center;gap:8px}
-.who button.on{border-color:var(--navy)}
-.who i{width:12px;height:12px;border-radius:50%}
-.binome{display:inline-flex;align-items:center;gap:8px;background:#FFF1E8;color:var(--orange-d);font-weight:800;font-size:18px;padding:8px 14px;border-radius:999px;margin-bottom:14px}
-@media (max-width:600px){.job{gap:12px;padding:14px 12px 14px 0}.job .h{min-width:70px;font-size:21px}.job .ad{font-size:18px}.job .vi{font-size:15px}.job .st{display:none}.who button{height:44px;font-size:15px;padding:0 12px}.top{padding:14px 16px}.top h1{font-size:19px}.scroll{padding:16px}.big-actions{gap:10px}.bigbtn{height:72px;font-size:19px}}
-.screen .toast{position:absolute;font-size:18px;padding:16px 22px}
+.alert{background:var(--err-50);color:var(--err);border-radius:16px;padding:14px 16px;font-size:18px;font-weight:800;margin-bottom:10px;display:none}
+.alert.show{display:block;animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.done-box{background:var(--ok-50);border:2px solid #A7E3C9;color:#065F46;border-radius:22px;padding:20px;font-size:20px;font-weight:800;text-align:center;margin-bottom:14px}
+/* Toast + annuler */
+.screen .toast{position:absolute;bottom:calc(120px + env(safe-area-inset-bottom));font-size:18px;padding:16px 20px;display:flex;align-items:center;gap:14px;width:max-content}
+.toast button{border:0;background:#FFB98A;color:var(--navy);font-weight:800;border-radius:10px;padding:8px 12px;font-size:16px}
+/* Visionneuse */
+.lb{position:absolute;inset:0;background:rgba(0,0,0,.92);z-index:50;display:none;align-items:center;justify-content:center;padding:20px}
+.lb.on{display:flex}
+.lb img{max-width:100%;max-height:100%;border-radius:12px}
+.lb button{position:absolute;top:calc(20px + env(safe-area-inset-top));right:20px;width:56px;height:56px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:30px}
+/* Mode plein soleil : contraste maximal */
+.screen.sunmode{--bg:#fff;--line:#0F1B2D;--mute:#0F1B2D}
+.screen.sunmode .job,.screen.sunmode .panel,.screen.sunmode .tabs button,.screen.sunmode .chips button{border-width:3px}
+.screen.sunmode .job .ad,.screen.sunmode .panel p{font-weight:800}
+/* ---------- Version iPhone (écran étroit) ---------- */
+@container scr (max-width:520px){
+  .top{padding:14px 16px;gap:10px}
+  .top .back{width:50px;height:50px}
+  .top h1{font-size:20px}
+  .top small{font-size:14px}
+  .sync{height:40px;padding:0 12px;font-size:0;gap:0}
+  .sync i{width:12px;height:12px}
+  .sync.off{font-size:13px;gap:6px}
+  .sun{width:40px;height:40px;font-size:18px}
+  .scroll{padding:14px 14px 24px}
+  .next{padding:16px;border-radius:22px}
+  .next .ad{font-size:22px}
+  .next .row2{gap:8px}
+  .next .row2 a,.next .row2 button{height:60px;font-size:15px;flex-direction:column;gap:2px}
+  .tabs button{height:54px;font-size:17px}
+  .job{gap:12px;padding:16px 12px 16px 0;min-height:88px;border-radius:20px}
+  .job .h{min-width:68px;font-size:22px}
+  .job .ad{font-size:18px}
+  .job .vi{font-size:15px}
+  .job .st{display:none}
+  .addr .a{font-size:23px}
+  .big-actions{gap:10px}
+  .bigbtn{height:76px;font-size:19px;border-radius:20px}
+  .primary-step{height:80px;font-size:21px}
+  .panel{padding:16px;border-radius:20px}
+  .panel p{font-size:18px}
+  .facts{font-size:17px;grid-template-columns:1fr}
+  .facts dt{margin-top:4px;font-size:14px;text-transform:uppercase;letter-spacing:.04em}
+  .facts dt:first-child{margin-top:0}
+  .thumbs{grid-template-columns:repeat(2,1fr)}
+  .photo-btn{height:88px;font-size:20px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;margin:0 -16px 12px;padding:0 16px;scrollbar-width:none}
+  .chips button{height:44px;font-size:15px;padding:0 13px;flex:none}
+  .cmt{flex-direction:column}
+  .mic{width:100%;height:60px;flex-direction:row;font-size:17px}
+  .validate{padding:10px 14px calc(14px + env(safe-area-inset-bottom))}
+  .validate button{height:74px;font-size:22px}
+  .need span{font-size:14px;padding:6px 10px}
+  .binome{font-size:16px}
+}
 </style>
 </head>
 <body>
-<div class="demo-bar"><span><b>Démo</b> · Écran du technicien (iPad) · données fictives</span>
-  <nav><a href="index.html">Accueil démo</a><a href="site.html">Site vitrine</a><a href="bureau.html">Bureau</a><a href="technicien.html" aria-current="page">Technicien (iPad)</a></nav></div>
+<div class="demo-bar"><span><b>Démo</b> · Application technicien (iPhone et iPad) · données fictives</span>
+  <nav><a href="index.html">Accueil démo</a><a href="site.html">Site vitrine</a><a href="bureau.html">Bureau</a><a href="technicien.html" aria-current="page">Technicien</a></nav></div>
 
 <div class="stage">
-  <div class="ipad"><div class="screen" id="screen"></div></div>
+  <div class="device ipad" id="device"><div class="screen" id="screen"></div></div>
   <div class="aside">
-    <h2>Essayez comme un technicien</h2>
-    <ol>
-      <li>Touchez l’intervention de <b>8h00</b>.</li>
-      <li>Essayez <b>Valider</b> tout de suite : l’app vous rappelle ce qui manque.</li>
-      <li>Ajoutez une photo et un commentaire (au micro si votre navigateur le permet).</li>
-      <li>Validez : elle part au bureau, dans « À contrôler ».</li>
-    </ol>
+    <div class="switch" role="group" aria-label="Appareil"><button data-dev="ipad" class="on">▭ iPad</button><button data-dev="iphone">▯ iPhone</button></div>
+    <div class="card"><h3>Essayez comme un technicien</h3>
+      <ol style="margin:0;padding-left:20px">
+        <li>Ouvrez l’intervention de <b>8h00</b>.</li>
+        <li>« Je pars » puis « Je suis sur place » : le bureau suit en direct.</li>
+        <li>Touchez <b>Valider</b> trop tôt : l’app dit ce qui manque.</li>
+        <li>Photo + commentaire (phrases toutes prêtes ou micro), puis Valider.</li>
+      </ol></div>
     <button class="btn" id="net">📶 Simuler une coupure de réseau</button>
-    <a class="btn primary" href="bureau.html#controle" target="_blank">Voir l’écran du bureau ↗</a>
-    <p style="font-size:13px;color:var(--mute)">Astuce : ouvrez le bureau dans un 2ᵉ onglet, côte à côte. Les mises à jour arrivent en temps réel.</p>
+    <a class="btn primary" href="bureau.html" target="_blank">Ouvrir l’écran du bureau ↗</a>
+    <div class="card" style="margin-top:10px"><h3>Changer de technicien</h3><div class="whos" id="whos"></div></div>
+    <div class="card"><h3>Sur votre iPhone ou iPad</h3><div class="qr"><img id="qr" alt="QR code de la démo"><span>Ouvrez ce lien dans Safari, puis Partager → <b>Sur l’écran d’accueil</b> : l’app s’ouvre comme une vraie application, même sans réseau.</span></div></div>
   </div>
 </div>
 
 <script src="data.js"></script>
 <script>
 const $=s=>document.querySelector(s), E=BK.esc, scr=$('#screen');
-let me='karim', tab='jour', openId=null, online=true, pending=0, draft={};
+const isTouch = matchMedia('(pointer:coarse)').matches && Math.min(screen.width,screen.height) <= 1100;
+const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+if(isTouch || standalone) document.body.classList.add('native');
+let me='karim', tab='jour', openId=null, online=navigator.onLine!==false, pending=0, queue=[], draft={}, sun=false;
+try{ sun = localStorage.getItem('bk-sun')==='1'; }catch(e){}
+const iOS=/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document;
 function S(){return BK.get();}
-function toast(m){ let t=scr.querySelector('.toast'); if(!t){t=document.createElement('div');t.className='toast';scr.appendChild(t);} t.textContent=m; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2600); }
+
+/* ---------- Utilitaires ---------- */
+function toast(m, undo){
+  let t=scr.querySelector('.toast'); if(!t){t=document.createElement('div');t.className='toast';scr.appendChild(t);}
+  t.innerHTML=E(m)+(undo?' <button>Annuler</button>':''); if(undo) t.querySelector('button').onclick=()=>{undo(); t.classList.remove('show');};
+  t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'), undo?5000:2600);
+}
 const ICON={
   phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>',
   route:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>',
   cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
-  mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4"/></svg>'
+  mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4"/></svg>',
+  open:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>'
 };
+const mapsUrl=i=>{ const q=encodeURIComponent(i.adresse+', '+i.ville); return iOS?'https://maps.apple.com/?daddr='+q:'https://www.google.com/maps/dir/?api=1&destination='+q; };
+const telUrl=t=>'tel:'+String(t||'').replace(/\s/g,'');
+const nowHHMM=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+'h'+String(d.getMinutes()).padStart(2,'0');};
+function persist(s){ if(online) BK.save(s); else { pending++; queue.push(()=>BK.save(s)); } }
 function syncHtml(){
-  if(!online) return `<button class="sync off" id="sync"><i></i>Hors connexion${pending?' · '+pending+' en attente':''}</button>`;
-  return `<button class="sync" id="sync"><i></i>Synchronisé</button>`;
+  if(!online) return `<button class="sync off" id="sync" aria-label="Hors connexion"><i></i>Hors ligne${pending?' · '+pending:''}</button>`;
+  return `<button class="sync" id="sync" aria-label="Synchronisé"><i></i>Synchronisé</button>`;
 }
-function bindTop(){ const b=$('#sync'); if(b) b.onclick=toggleNet; const back=$('#back'); if(back) back.onclick=()=>{openId=null; render();}; }
+function topBar(title, sub, back){
+  return `<div class="top">${back?'<button class="back" id="back" aria-label="Retour">‹</button>':''}<div class="ttl"><h1>${title}</h1><small>${sub}</small></div><button class="sun" id="sun" aria-label="Mode plein soleil" title="Mode plein soleil">${sun?'☀️':'🌤'}</button>${syncHtml()}</div>`;
+}
+function bindTop(){
+  $('#sync').onclick=()=>toast(online?'Tout est envoyé au bureau':'Pas de réseau : tout est gardé sur l’appareil et partira tout seul');
+  $('#sun').onclick=()=>{ sun=!sun; try{localStorage.setItem('bk-sun',sun?'1':'0')}catch(e){} scr.classList.toggle('sunmode',sun); $('#sun').textContent=sun?'☀️':'🌤'; toast(sun?'Mode plein soleil : contraste maximal':'Affichage normal'); };
+  const b=$('#back'); if(b) b.onclick=()=>{ openId=null; render(); };
+}
 
+/* ---------- Liste du jour / de la semaine ---------- */
 function list(){
   const s=S(), t=BK.tech(me), today=BK.todayIso();
   const mine=s.interventions.filter(i=>i.techs.includes(me) && i.statut!=='cloturee');
-  let days;
-  if(tab==='jour') days=[today];
-  else { const m=BK.monday(new Date(today+'T12:00')); days=[...Array(6)].map((_,k)=>BK.iso(BK.addDays(m,k))); }
+  const todayJobs=mine.filter(i=>i.date===today && i.type!=='interne').sort((a,b)=>a.start.localeCompare(b.start));
+  const done=todayJobs.filter(i=>i.statut==='controle').length;
+  const next=todayJobs.find(i=>i.statut!=='controle');
+  const days = tab==='jour' ? [today] : [...Array(6)].map((_,k)=>BK.iso(BK.addDays(BK.monday(new Date(today+'T12:00')),k)));
+  const jobHtml=i=>{
+    const sc={planifiee:'#1565D8',enroute:'#6D28D9',encours:'#B45309',controle:'#0E9F6E'}[i.statut]||'#1565D8';
+    const label=i.statut==='controle'?'Terminée':BK.STATUTS[i.statut];
+    const other=i.techs.filter(x=>x!==me);
+    return `<button class="job ${i.type==='interne'?'int':''} ${i.statut==='controle'?'done':''}" data-id="${i.id}" style="--sc:${sc}">
+      <div class="h">${BK.hh(i.start)}<small>${BK.endTime(i.start,i.dur)}</small></div>
+      <div class="b"><div class="ad">${i.type==='interne'?'Tâche interne':E(i.adresse)}</div><div class="vi">${i.type==='interne'?E(i.travaux):E(i.ville)+(other.length?' · 👥 '+other.map(x=>BK.tech(x).nom).join(', '):'')}${i.statut==='controle'?' · ✓ Terminée':''}</div></div>
+      ${i.type==='interne'?'':`<span class="st ${i.statut}">${label}</span>`}<span class="chev">›</span></button>`;
+  };
   const block=d=>{
     const it=mine.filter(i=>i.date===d).sort((a,b)=>a.start.localeCompare(b.start));
     const abs=s.absences.find(a=>a.tech===me&&a.date===d);
-    return `${tab==='semaine'?`<div class="daytitle">${BK.label(d,true)}${d===today?' · aujourd’hui':''}</div>`:''}` + (abs?`<div class="panel"><p>🌴 ${E(abs.label)}</p></div>`:'') +
-      (it.length? it.map(i=>{
-        const st = i.statut==='controle'?'Terminée':BK.STATUTS[i.statut];
-        const sc = {planifiee:'#1565D8',encours:'#B45309',controle:'#0E9F6E'}[i.statut]||'#1565D8';
-        return `<button class="job ${i.type==='interne'?'int':''} ${i.statut==='controle'?'done':''}" data-id="${i.id}" style="--sc:${sc}">
-          <div class="h">${BK.hh(i.start)}<small>${BK.endTime(i.start,i.dur)}</small></div>
-          <div class="b"><div class="ad">${i.type==='interne'?'Tâche interne':E(i.adresse)}</div><div class="vi">${i.type==='interne'?E(i.travaux):E(i.ville)+(i.techs.length>1?' · 👥 avec '+i.techs.filter(x=>x!==me).map(x=>BK.tech(x).nom).join(', '):'')}</div></div>
-          ${i.type==='interne'?'':`<span class="st ${i.statut}">${st}</span>`}<span class="chev">›</span></button>`;}).join('') : (abs?'':`<div class="panel"><p style="color:var(--mute)">Rien de prévu.</p></div>`));
+    return (tab==='semaine'?`<div class="daytitle">${BK.label(d,true)}${d===today?' · aujourd’hui':''}</div>`:'') +
+      (abs?`<div class="panel"><p>🌴 ${E(abs.label)}</p></div>`:'') +
+      (it.length? it.map(jobHtml).join('') : (abs?'':`<div class="panel"><p style="color:var(--mute)">Rien de prévu.</p></div>`));
   };
-  const nb=mine.filter(i=>i.date===today && i.statut!=='controle' && i.type!=='interne').length;
-  scr.innerHTML = `<div class="top"><div><h1>Bonjour ${t.nom} 👋</h1><small>${BK.label(today,true)} · ${nb} intervention${nb>1?'s':''} à faire</small></div>${syncHtml()}</div>
-    <div class="scroll">
-      <div class="who" aria-label="Changer de technicien (démo)">${s.techs.map(x=>`<button data-me="${x.id}" class="${x.id===me?'on':''}"><i style="background:${x.couleur}"></i>${x.nom}</button>`).join('')}</div>
-      <div class="tabs" style="margin-top:14px"><button data-tab="jour" class="${tab==='jour'?'on':''}">Aujourd’hui</button><button data-tab="semaine" class="${tab==='semaine'?'on':''}">Ma semaine</button></div>
-      ${days.map(block).join('')}
-    </div>`;
-  scr.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>{ openId=b.dataset.id; render(); scr.querySelector('.scroll').scrollTop=0; });
+  scr.innerHTML = topBar(`Bonjour ${E(t.nom)} 👋`, BK.label(today,true), false) + `<div class="scroll">
+    ${tab==='jour' && next ? `<div class="next"><div class="lbl">${next.statut==='planifiee'?'Prochaine intervention':'En ce moment'} · ${BK.hh(next.start)}</div><div class="ad">${E(next.adresse)}</div><div class="vi">${E(next.ville)} · ${E(next.occupant)}</div>
+      <div class="row2"><a href="${telUrl(next.tel)}">${ICON.phone}Appeler</a><a href="${mapsUrl(next)}" target="_blank" rel="noopener">${ICON.route}Itinéraire</a><button class="go" data-id="${next.id}">${ICON.open}Ouvrir</button></div></div>`:''}
+    ${tab==='jour' && todayJobs.length ? `<div class="prog"><span>${done} / ${todayJobs.length} terminées</span><div class="bar"><i style="width:${todayJobs.length?done/todayJobs.length*100:0}%"></i></div></div>`:''}
+    ${tab==='jour' && todayJobs.length && !next ? `<div class="done-box">🎉 Journée terminée, tout est envoyé au bureau.</div>`:''}
+    <div class="tabs"><button data-tab="jour" class="${tab==='jour'?'on':''}">Aujourd’hui</button><button data-tab="semaine" class="${tab==='semaine'?'on':''}">Ma semaine</button></div>
+    ${days.map(block).join('')}
+    ${document.body.classList.contains('native')?`<div class="demo-who"><p>Démo : changer de technicien</p><div class="whos">${whos()}</div></div>`:''}
+  </div>`;
+  scr.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>openJob(b.dataset.id));
   scr.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{ tab=b.dataset.tab; render(); });
-  scr.querySelectorAll('[data-me]').forEach(b=>b.onclick=()=>{ me=b.dataset.me; render(); });
-  bindTop();
+  bindWhos(); bindTop();
 }
+function whos(){ return S().techs.map(x=>`<button data-me="${x.id}" class="${x.id===me?'on':''}"><i style="background:${x.couleur}"></i>${x.nom}</button>`).join(''); }
+function bindWhos(){
+  const w=$('#whos'); if(w) w.innerHTML=whos();
+  document.querySelectorAll('[data-me]').forEach(b=>b.onclick=()=>{ me=b.dataset.me; openId=null; render(); });
+}
+function openJob(id){ openId=id; render(); const sc=scr.querySelector('.scroll'); if(sc) sc.scrollTop=0; }
 
+/* ---------- Fiche intervention ---------- */
+const PHRASES=['Fuite réparée','Pièce remplacée','Testé, aucune fuite','Pièce à commander','Prévoir un retour','Occupant absent','Devis complémentaire à faire'];
 function fiche(){
   const s=S(), i=s.interventions.find(x=>x.id===openId); if(!i){ openId=null; return list(); }
-  const d = draft[i.id] = draft[i.id] || { photos:[...i.photos], commentaire:i.commentaire };
-  const done = i.statut==='controle'||i.statut==='cloturee';
+  const d = draft[i.id] = draft[i.id] || { photos:i.photos.map(p=>typeof p==='string'?{src:p,tag:''}:p), commentaire:i.commentaire };
+  const done = i.statut==='controle'||i.statut==='cloturee', interne=i.type==='interne';
   const others=i.techs.filter(x=>x!==me);
-  const maps='https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(i.adresse+', '+i.ville);
-  scr.innerHTML = `<div class="top"><button class="back" id="back" aria-label="Retour">‹</button><div><h1>${BK.hh(i.start)} · ${i.type==='interne'?'Tâche interne':E(i.ville)}</h1><small>${BK.label(i.date,true)}</small></div>${syncHtml()}</div>
-   <div class="scroll">
-     ${done?`<div class="done-box">✓ Intervention terminée et envoyée au bureau</div>`:''}
-     <div class="panel" style="border-color:var(--navy)"><p style="font-size:26px;font-weight:800">${E(i.adresse)}</p><p style="color:var(--mute);font-size:19px">${E(i.ville)}</p></div>
-     ${others.length?`<div class="binome">👥 En binôme avec ${others.map(x=>BK.tech(x).nom).join(', ')}</div>`:''}
-     ${i.type==='interne'?'':`<div class="big-actions"><a class="bigbtn call" href="tel:${E(i.tel)}">${ICON.phone}Appeler</a><a class="bigbtn route" href="${maps}" target="_blank" rel="noopener">${ICON.route}Itinéraire</a></div>
-     <div class="panel"><dl class="facts"><dt>Occupant</dt><dd>${E(i.occupant)}</dd><dt>Agence</dt><dd>${E(i.agence)}</dd><dt>Horaires</dt><dd>${BK.hh(i.start)} – ${BK.endTime(i.start,i.dur)}</dd></dl></div>`}
-     <div class="panel"><h3>Travaux à faire</h3><p>${E(i.travaux)}</p></div>
-     ${i.type==='interne'?'':`
-     <div class="panel"><h3>Photos</h3>
-       ${done?'':`<label class="photo-btn">${ICON.cam}Prendre une photo<input type="file" accept="image/*" capture="environment" class="sr" id="cam"></label>`}
-       <div class="thumbs">${d.photos.map((p,k)=>`<div><img src="${p}" alt="Photo ${k+1}">${done?'':`<button data-rm="${k}" aria-label="Supprimer la photo">×</button>`}</div>`).join('')}</div>
-     </div>
-     <div class="panel"><h3>Commentaire</h3>
-       ${done?`<p>${E(d.commentaire)}</p>`:`<div class="cmt"><textarea id="cmt" placeholder="Ce qui a été fait, ce qui reste à prévoir…">${E(d.commentaire)}</textarea><button class="mic" id="mic">${ICON.mic}Dicter</button></div>`}
-     </div>`}
-   </div>
-   ${done||i.type==='interne'?'':`<div class="validate"><div class="alert" id="alert"></div><div class="need"><span id="n1" class="${d.photos.length?'ok':''}">${d.photos.length?'✓':'○'} Au moins 1 photo</span><span id="n2" class="${d.commentaire.trim()?'ok':''}">${d.commentaire.trim()?'✓':'○'} Un commentaire</span></div><button id="ok" class="${d.photos.length&&d.commentaire.trim()?'ready':''}">Valider l’intervention</button></div>`}`;
+  const hist = interne?[]:s.interventions.filter(x=>x.id!==i.id && x.statut==='cloturee' && x.adresse.split(',')[0].toLowerCase()===i.adresse.split(',')[0].toLowerCase()).sort((a,b)=>b.date.localeCompare(a.date));
+  const stepIdx={planifiee:0,enroute:1,encours:2,controle:3,cloturee:3}[i.statut];
+  const eta = BK.hh(i.start);
+  const smsBody = encodeURIComponent(`Bonjour, c’est ${BK.tech(me).nom} de BK+ Plomberie. Je suis en route pour votre intervention, j’arrive dans une vingtaine de minutes.`);
+  scr.innerHTML = topBar(`${BK.hh(i.start)} · ${interne?'Tâche interne':E(i.ville)}`, BK.label(i.date,true), true) + `<div class="scroll">
+    ${done?`<div class="done-box">✓ Terminée et envoyée au bureau</div>`:''}
+    ${interne?'':`<div class="step" aria-label="Étapes"><div class="${stepIdx>=0?'on':''}">Prévue</div><div class="${stepIdx>=1?'on':''}">En route</div><div class="${stepIdx>=2?'on':''}">Sur place</div><div class="${stepIdx>=3?'on':''}">Terminée</div></div>`}
+    <div class="addr"><div class="a">${E(i.adresse)}</div><div class="v">${E(i.ville)}</div></div>
+    ${others.length?`<div class="binome">👥 En binôme avec ${others.map(x=>BK.tech(x).nom).join(', ')}</div>`:''}
+    ${interne?'':`<div class="big-actions"><a class="bigbtn call" href="${telUrl(i.tel)}">${ICON.phone}Appeler</a><a class="bigbtn route" href="${mapsUrl(i)}" target="_blank" rel="noopener">${ICON.route}Itinéraire</a></div>`}
+    ${!interne && i.statut==='planifiee'?`<button class="primary-step" id="go">🚐 Je pars</button>`:''}
+    ${!interne && i.statut==='enroute'?`<a class="sms" href="sms:${String(i.tel).replace(/\s/g,'')}${iOS?'&':'?'}body=${smsBody}">💬 Prévenir l’occupant par SMS</a><button class="primary-step here" id="here">📍 Je suis sur place</button>`:''}
+    ${!interne && i.statut==='encours' && i.startedAt?`<div class="since">⏱ Sur place depuis ${E(i.startedAt)}</div>`:''}
+    ${interne?'':`<div class="panel"><dl class="facts"><dt>Occupant</dt><dd>${E(i.occupant)}</dd><dt>Téléphone</dt><dd><a href="${telUrl(i.tel)}">${E(String(i.tel).replace(/(\d{2})(?=\d)/g,'$1 '))}</a></dd><dt>Agence</dt><dd>${E(i.agence)}</dd><dt>Horaires</dt><dd>${BK.hh(i.start)} – ${BK.endTime(i.start,i.dur)}</dd></dl></div>`}
+    <div class="panel"><h3>🔧 Travaux à faire</h3><p>${E(i.travaux)}</p></div>
+    ${hist.length?`<div class="panel"><h3>🕘 Déjà venu à cette adresse</h3>${hist.map(h=>`<div class="hist"><b>${BK.label(h.date,true)} · ${h.techs.map(x=>BK.tech(x).nom).join(' + ')}</b><div>${E(h.travaux)}${h.commentaire?' — '+E(h.commentaire):''}</div>${h.photos.length?`<div class="ph">${h.photos.map(p=>`<img src="${typeof p==='string'?p:p.src}" alt="Photo précédente" data-lb>`).join('')}</div>`:''}</div>`).join('')}</div>`:''}
+    ${interne?'':`
+    <div class="panel"><h3>📷 Photos</h3>
+      ${done?'':`<label class="photo-btn">${ICON.cam}Prendre une photo<input type="file" accept="image/*" capture="environment" class="sr" id="cam"></label>`}
+      <div class="thumbs">${d.photos.map((p,k)=>`<figure><img src="${p.src}" alt="Photo ${k+1}" data-lb>${done?(p.tag?`<span class="tg">${E(p.tag)}</span>`:''):`<button class="tg" data-tag="${k}">${p.tag||'Avant / Après ?'}</button><button class="rm" data-rm="${k}" aria-label="Supprimer la photo">×</button>`}</figure>`).join('')}</div>
+    </div>
+    <div class="panel"><h3>✍️ Commentaire</h3>
+      ${done?`<p>${E(d.commentaire)}</p>`:`<div class="chips">${PHRASES.map(p=>`<button data-ph="${E(p)}">+ ${E(p)}</button>`).join('')}</div><div class="cmt"><textarea id="cmt" placeholder="Ce qui a été fait, ce qui reste à prévoir…">${E(d.commentaire)}</textarea><button class="mic" id="mic">${ICON.mic}Dicter</button></div>`}
+    </div>`}
+  </div>
+  ${done||interne?'':`<div class="validate"><div class="alert" id="alert" role="alert"></div><div class="need"><span id="n1">○ 1 photo minimum</span><span id="n2">○ Un commentaire</span></div><button id="ok">Valider l’intervention</button></div>`}
+  <div class="lb" id="lb"><img alt=""><button aria-label="Fermer">×</button></div>`;
   bindTop();
-  if(done||i.type==='interne') return;
+  scr.querySelectorAll('[data-lb]').forEach(img=>img.onclick=()=>{ const lb=$('#lb'); lb.querySelector('img').src=img.src; lb.classList.add('on'); });
+  $('#lb').onclick=()=>$('#lb').classList.remove('on');
+  const go=$('#go'); if(go) go.onclick=()=>{ i.statut='enroute'; persist(s); fiche(); toast('Le bureau voit que vous êtes en route'); };
+  const here=$('#here'); if(here) here.onclick=()=>{ i.statut='encours'; i.startedAt=nowHHMM(); persist(s); fiche(); toast('Arrivée enregistrée à '+i.startedAt); };
+  if(done||interne) return;
   const upd=()=>{ const ok1=d.photos.length>0, ok2=d.commentaire.trim().length>0;
-    $('#n1').className=ok1?'ok':''; $('#n1').textContent=(ok1?'✓':'○')+' Au moins 1 photo';
+    $('#n1').className=ok1?'ok':''; $('#n1').textContent=(ok1?'✓':'○')+' 1 photo minimum';
     $('#n2').className=ok2?'ok':''; $('#n2').textContent=(ok2?'✓':'○')+' Un commentaire';
     $('#ok').classList.toggle('ready',ok1&&ok2); if(ok1&&ok2) $('#alert').classList.remove('show'); };
-  $('#cam').onchange=e=>{ const f=e.target.files[0]; if(!f) return; resize(f).then(url=>{ d.photos.push(url); if(i.statut==='planifiee') { i.statut='encours'; BK.save(s);} fiche(); toast('Photo enregistrée'); }); };
-  scr.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{ d.photos.splice(+b.dataset.rm,1); fiche(); });
-  $('#cmt').oninput=e=>{ d.commentaire=e.target.value; upd(); };
+  upd();
+  $('#cam').onchange=e=>{ const f=e.target.files[0]; if(!f) return; resize(f).then(url=>{ d.photos.push({src:url,tag:d.photos.length?'Après':'Avant'}); if(i.statut==='planifiee'||i.statut==='enroute'){ i.statut='encours'; i.startedAt=i.startedAt||nowHHMM(); persist(s);} const y=scr.querySelector('.scroll').scrollTop; fiche(); scr.querySelector('.scroll').scrollTop=y; toast('Photo enregistrée sur l’appareil'); }); };
+  scr.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{ const k=+b.dataset.rm, p=d.photos.splice(k,1)[0]; const y=scr.querySelector('.scroll').scrollTop; fiche(); scr.querySelector('.scroll').scrollTop=y; toast('Photo supprimée',()=>{ d.photos.splice(k,0,p); fiche(); }); });
+  scr.querySelectorAll('[data-tag]').forEach(b=>b.onclick=()=>{ const p=d.photos[+b.dataset.tag]; p.tag = p.tag==='Avant'?'Après':(p.tag==='Après'?'Pendant':'Avant'); b.textContent=p.tag; });
+  const ta=$('#cmt');
+  ta.oninput=e=>{ d.commentaire=e.target.value; upd(); };
+  scr.querySelectorAll('[data-ph]').forEach(b=>b.onclick=()=>{ const p=b.dataset.ph; ta.value = ta.value.trim() ? ta.value.replace(/\s*$/,'')+(/[.!?]$/.test(ta.value.trim())?' ':'. ')+p : p; ta.dispatchEvent(new Event('input')); });
   $('#mic').onclick=dictate;
   $('#ok').onclick=()=>{
     const miss=[]; if(!d.photos.length) miss.push('au moins une photo'); if(!d.commentaire.trim()) miss.push('un commentaire');
-    if(miss.length){ const a=$('#alert'); a.textContent='Ajoutez '+miss.join(' et ')+' pour valider.'; a.classList.add('show'); return; }
-    Object.assign(i,{photos:d.photos, commentaire:d.commentaire, statut:'controle'}); delete draft[i.id];
-    if(online){ BK.save(s); toast('✓ Envoyée au bureau'); }
-    else { pending++; window._queue=(window._queue||[]).concat([()=>BK.save(s)]); toast('Enregistrée sur l’iPad · envoi au retour du réseau'); }
-    openId=null; render();
+    if(miss.length){ const a=$('#alert'); a.classList.remove('show'); void a.offsetWidth; a.textContent='Ajoutez '+miss.join(' et ')+' pour valider.'; a.classList.add('show'); return; }
+    const before={statut:i.statut, photos:i.photos, commentaire:i.commentaire};
+    Object.assign(i,{photos:d.photos.map(p=>p.src), commentaire:d.commentaire.trim(), statut:'controle', doneAt:nowHHMM()}); delete draft[i.id];
+    persist(s); openId=null; render();
+    toast(online?'✓ Envoyée au bureau':'✓ Gardée sur l’appareil · partira au retour du réseau', ()=>{ Object.assign(i,before); BK.save(s); openJob(i.id); toast('Validation annulée'); });
   };
 }
-function resize(file){ return new Promise(res=>{ const img=new Image(), r=new FileReader(); r.onload=()=>{ img.onload=()=>{ const c=document.createElement('canvas'), k=Math.min(1,640/Math.max(img.width,img.height)); c.width=img.width*k; c.height=img.height*k; c.getContext('2d').drawImage(img,0,0,c.width,c.height); res(c.toDataURL('image/jpeg',.72)); }; img.src=r.result; }; r.readAsDataURL(file); }); }
+function resize(file){ return new Promise(res=>{ const img=new Image(), r=new FileReader(); r.onload=()=>{ img.onload=()=>{ const c=document.createElement('canvas'), k=Math.min(1,800/Math.max(img.width,img.height)); c.width=Math.round(img.width*k); c.height=Math.round(img.height*k); c.getContext('2d').drawImage(img,0,0,c.width,c.height); res(c.toDataURL('image/jpeg',.7)); }; img.src=r.result; }; r.readAsDataURL(file); }); }
 let rec=null;
 function dictate(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition, b=$('#mic');
-  if(!SR){ toast('Sur iPad : touchez le micro 🎤 du clavier pour dicter'); $('#cmt').focus(); return; }
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition, b=$('#mic'), ta=$('#cmt');
+  if(!SR){ ta.focus(); toast('Touchez le micro 🎤 du clavier pour dicter'); return; }
   if(rec){ rec.stop(); return; }
-  rec=new SR(); rec.lang='fr-FR'; rec.interimResults=false; b.classList.add('rec');
-  rec.onresult=e=>{ const t=[...e.results].map(r=>r[0].transcript).join(' '); const ta=$('#cmt'); ta.value=(ta.value?ta.value+' ':'')+t; ta.dispatchEvent(new Event('input')); };
-  rec.onend=()=>{ rec=null; const m=$('#mic'); if(m) m.classList.remove('rec'); };
-  rec.onerror=()=>toast('Micro indisponible — utilisez le micro du clavier');
-  rec.start();
+  rec=new SR(); rec.lang='fr-FR'; rec.interimResults=false; rec.continuous=false; b.classList.add('rec'); b.lastChild.textContent='Stop';
+  rec.onresult=e=>{ const t=[...e.results].map(r=>r[0].transcript).join(' '); ta.value=(ta.value.trim()?ta.value.trim()+' ':'')+t.charAt(0).toUpperCase()+t.slice(1); ta.dispatchEvent(new Event('input')); };
+  rec.onend=()=>{ rec=null; const m=$('#mic'); if(m){ m.classList.remove('rec'); m.lastChild.textContent='Dicter'; } };
+  rec.onerror=()=>{ ta.focus(); toast('Utilisez le micro 🎤 du clavier'); };
+  try{ rec.start(); }catch(e){ rec=null; b.classList.remove('rec'); }
 }
-function toggleNet(){
-  online=!online; $('#net').textContent= online?'📶 Simuler une coupure de réseau':'📶 Rétablir le réseau';
-  if(online && pending){ render(); const b=$('#sync'); b.classList.add('busy'); b.innerHTML='<i></i>Envoi en cours…'; setTimeout(()=>{ (window._queue||[]).forEach(f=>f()); window._queue=[]; const n=pending; pending=0; render(); toast(`✓ ${n} intervention${n>1?'s':''} envoyée${n>1?'s':''} au bureau`); },1400); }
-  else { render(); toast(online?'Réseau rétabli':'Plus de réseau : tout continue de fonctionner'); }
+
+/* ---------- Réseau ---------- */
+function setOnline(v, silent){
+  if(online===v) return; online=v; const nb=$('#net'); if(nb) nb.textContent= online?'📶 Simuler une coupure de réseau':'📶 Rétablir le réseau';
+  if(online && pending){ render(); const b=$('#sync'); b.classList.add('busy'); b.innerHTML='<i></i>Envoi…'; setTimeout(()=>{ queue.forEach(f=>f()); queue=[]; const n=pending; pending=0; render(); toast(`✓ ${n} mise${n>1?'s':''} à jour envoyée${n>1?'s':''} au bureau`); },1400); }
+  else { render(); if(!silent) toast(online?'Réseau rétabli':'Plus de réseau : l’app continue de fonctionner'); }
 }
-$('#net').onclick=toggleNet;
-window.addEventListener('offline',()=>{ if(online) toggleNet(); });
-window.addEventListener('online',()=>{ if(!online) toggleNet(); });
+$('#net').onclick=()=>setOnline(!online);
+window.addEventListener('offline',()=>setOnline(false));
+window.addEventListener('online',()=>setOnline(true));
 BK.onChange(()=>{ if(!openId) render(); toast('Planning mis à jour par le bureau'); });
-function render(){ openId?fiche():list(); }
+
+/* ---------- Choix de l’appareil (ordinateur) ---------- */
+function setDevice(dv){ $('#device').className='device '+dv; document.querySelectorAll('[data-dev]').forEach(b=>b.classList.toggle('on',b.dataset.dev===dv)); try{history.replaceState(null,'','?d='+dv)}catch(e){} }
+document.querySelectorAll('[data-dev]').forEach(b=>b.onclick=()=>setDevice(b.dataset.dev));
+setDevice(new URLSearchParams(location.search).get('d')==='iphone'?'iphone':'ipad');
+$('#qr').src='https://api.qrserver.com/v1/create-qr-code/?size=192x192&margin=0&data='+encodeURIComponent(location.origin+location.pathname);
+
+function render(){ scr.classList.toggle('sunmode',sun); openId?fiche():list(); bindWhos(); }
 render();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
 </html>

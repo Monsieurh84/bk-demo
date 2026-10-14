@@ -57,5 +57,6 @@ h1 em{font-style:normal;color:#FFB98A}
 </div>
 <script src="data.js"></script>
 <script>document.getElementById('reset').onclick=e=>{e.preventDefault();BK.reset();e.target.textContent='Démo réinitialisée ✓';};</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
 </body>
 </html>
