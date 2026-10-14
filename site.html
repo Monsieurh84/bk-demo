@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>BK+ · Plombier à Istres — dépannage, fuite, chauffe-eau (démo)</title>
+<meta name="description" content="Plombier à Istres, Martigues, Miramas, Fos-sur-Mer : dépannage rapide, recherche de fuite, chauffe-eau, salle de bain. Devis gratuit.">
+<link rel="icon" href="favicon.svg">
+<link rel="stylesheet" href="app.css">
+<style>
+body{background:#fff}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+header.site{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.site .wrap{display:flex;align-items:center;gap:20px;height:72px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;text-decoration:none;color:var(--navy)}
+.logo span{width:40px;height:40px;border-radius:11px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:15px}
+.logo small{display:block;font-size:12px;color:var(--mute);font-weight:600}
+header nav{display:flex;gap:22px;margin-left:auto;font-weight:600}
+header nav a{color:var(--ink);text-decoration:none}
+header nav a:hover{color:var(--blue)}
+.tel{display:flex;align-items:center;gap:8px;background:var(--orange);color:#fff;font-weight:800;padding:12px 18px;border-radius:12px;text-decoration:none;white-space:nowrap}
+.hero{background:radial-gradient(1200px 500px at 85% -10%,#1E4E8C 0,transparent 60%),var(--navy);color:#fff;padding:72px 0 80px;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);padding:6px 12px;border-radius:999px;font-weight:700;font-size:14px}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:#34D399}
+.hero h1{font-size:clamp(34px,5vw,56px);line-height:1.05;margin:18px 0 16px;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:#FFB98A}
+.hero p.lead{font-size:19px;color:#C9D6E8;max-width:560px;line-height:1.5;margin:0 0 26px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.cta a{padding:16px 22px;border-radius:14px;font-weight:800;text-decoration:none;font-size:17px}
+.cta .a1{background:var(--orange);color:#fff}
+.cta .a2{background:#fff;color:var(--navy)}
+.proofs{display:flex;gap:26px;margin-top:34px;flex-wrap:wrap;color:#C9D6E8;font-size:15px}
+.proofs b{display:block;color:#fff;font-size:24px}
+.hero-card{background:#fff;color:var(--ink);border-radius:22px;padding:24px;box-shadow:0 30px 60px rgba(0,0,0,.3)}
+.hero-card h2{margin:0 0 4px;font-size:22px}
+.hero-card p{margin:0 0 16px;color:var(--mute)}
+.urg{display:grid;gap:10px}
+.urg a{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:14px;padding:14px;text-decoration:none;color:var(--ink);font-weight:700}
+.urg a:hover{border-color:var(--blue);background:var(--blue-50)}
+.urg span.ic{width:42px;height:42px;border-radius:11px;background:var(--blue-50);display:grid;place-items:center;font-size:22px}
+section{padding:80px 0}
+.sec-h{max-width:640px;margin-bottom:36px}
+.sec-h small{color:var(--orange);font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:13px}
+.sec-h h2{font-size:clamp(28px,3.5vw,40px);margin:8px 0 10px;letter-spacing:-.01em}
+.sec-h p{color:var(--mute);font-size:17px;line-height:1.55;margin:0}
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.svc{border:1px solid var(--line);border-radius:18px;padding:24px;transition:.2s;background:#fff}
+.svc:hover{border-color:#B9CBE4;box-shadow:var(--sh);transform:translateY(-2px)}
+.svc .ic{width:52px;height:52px;border-radius:14px;background:var(--blue-50);display:grid;place-items:center;font-size:26px;margin-bottom:16px}
+.svc h3{margin:0 0 8px;font-size:19px}
+.svc p{margin:0 0 14px;color:var(--mute);line-height:1.5}
+.svc a{font-weight:700;text-decoration:none}
+.pros{background:var(--bg)}
+.pros .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.checks{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.checks li{display:flex;gap:12px;font-size:17px;line-height:1.45}
+.checks li::before{content:'✓';flex:none;width:28px;height:28px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px}
+.mock{background:#fff;border-radius:20px;padding:20px;box-shadow:var(--sh);border:1px solid var(--line)}
+.mock .line{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;border:1px solid var(--line);margin-bottom:10px;font-size:14px}
+.mock .line b{display:block;font-size:15px}
+.mock .line .pill{margin-left:auto}
+.mock img{width:64px;height:48px;border-radius:8px;object-fit:cover}
+.zones{display:flex;flex-wrap:wrap;gap:10px}
+.zones a{border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-weight:700;text-decoration:none;color:var(--ink)}
+.zones a:hover{border-color:var(--blue);color:var(--blue)}
+.zones a.main{background:var(--navy);color:#fff;border-color:var(--navy)}
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.rev{border:1px dashed #C8D2DF;border-radius:18px;padding:22px;background:#FBFCFD}
+.rev .stars{color:#F5B301;letter-spacing:2px;font-size:18px}
+.rev p{color:var(--mute);line-height:1.5}
+.tag{display:inline-block;background:var(--bg);color:var(--mute);font-size:12px;font-weight:700;border-radius:6px;padding:3px 8px}
+.devis{background:linear-gradient(135deg,var(--navy),#163E6E);color:#fff}
+.devis .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:start}
+.devis .sec-h p{color:#C9D6E8}
+.devis .sec-h small{color:#FFB98A}
+form.f{background:#fff;color:var(--ink);border-radius:22px;padding:26px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+form.f label{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:14px}
+form.f .full{grid-column:1/-1}
+form.f input,form.f select,form.f textarea{border:1px solid var(--line);border-radius:12px;padding:13px 14px;font-weight:500;background:#fff}
+form.f textarea{min-height:110px;resize:vertical}
+form.f button{grid-column:1/-1;height:58px;border:0;border-radius:14px;background:var(--orange);color:#fff;font-weight:800;font-size:18px}
+form.f .rgpd{grid-column:1/-1;font-size:12px;color:var(--mute);font-weight:500}
+.ok-box{background:#fff;color:var(--ink);border-radius:22px;padding:34px;text-align:center}
+.ok-box .big{width:72px;height:72px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:36px;margin:0 auto 16px}
+.ok-box h3{font-size:24px;margin:0 0 8px}
+.ok-box p{color:var(--mute);margin:0 0 20px}
+.steps{display:grid;gap:14px;margin-top:22px}
+.steps div{display:flex;gap:14px;align-items:flex-start;color:#DCE6F3}
+.steps b{flex:none;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.12);display:grid;place-items:center}
+footer.site{background:#071a31;color:#9FB2CB;padding:44px 0;font-size:14px}
+footer.site .wrap{display:flex;gap:24px;flex-wrap:wrap;justify-content:space-between}
+footer.site a{color:#fff;text-decoration:none}
+.mobile-call{display:none}
+@media (max-width:900px){
+  header nav{display:none}.hero .wrap,.pros .wrap,.devis .wrap{grid-template-columns:1fr}.services,.reviews{grid-template-columns:1fr}
+  section{padding:56px 0}.hero{padding:48px 0 56px}form.f{grid-template-columns:1fr}
+  .mobile-call{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:30;justify-content:center;gap:10px;background:var(--orange);color:#fff;font-weight:800;font-size:18px;padding:16px;border-radius:16px;text-decoration:none;box-shadow:0 10px 30px rgba(242,107,29,.4)}
+  header .tel{display:none}
+}
+</style>
+</head>
+<body>
+<div class="demo-bar"><span><b>Démo</b> · Site vitrine · textes et coordonnées provisoires</span>
+  <nav><a href="index.html">Accueil démo</a><a href="site.html" aria-current="page">Site vitrine</a><a href="bureau.html">Bureau</a><a href="technicien.html">Technicien (iPad)</a></nav></div>
+
+<header class="site"><div class="wrap">
+  <a class="logo" href="#"><span>BK+</span><div>BK+ Plomberie<small>Istres · Étang de Berre</small></div></a>
+  <nav><a href="#services">Services</a><a href="#pros">Agences & syndics</a><a href="#zones">Zones</a><a href="#devis">Devis</a></nav>
+  <a class="tel" href="tel:+33400000000">📞 04 42 XX XX XX</a>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div>
+    <span class="eyebrow"><i></i>Disponibles aujourd’hui à Istres et alentours</span>
+    <h1>Votre plombier à Istres,<br><em>rapide et sans mauvaise surprise.</em></h1>
+    <p class="lead">Dépannage, recherche de fuite, chauffe-eau, salle de bain. Une équipe de 5 techniciens, un devis clair avant chaque intervention et des photos de chaque chantier.</p>
+    <div class="cta"><a class="a1" href="#devis">Demander un devis gratuit</a><a class="a2" href="tel:+33400000000">📞 Appeler maintenant</a></div>
+    <div class="proofs"><div><b>5</b>techniciens</div><div><b>7 communes</b>couvertes</div><div><b>Photos</b>de chaque intervention</div></div>
+  </div>
+  <div class="hero-card">
+    <h2>Une urgence ?</h2><p>Dites-nous ce qui se passe, on vous rappelle.</p>
+    <div class="urg">
+      <a href="#devis" data-svc="Fuite / dégât des eaux"><span class="ic">💧</span>Fuite d’eau ou dégât des eaux</a>
+      <a href="#devis" data-svc="Débouchage"><span class="ic">🚽</span>WC, évier ou douche bouché</a>
+      <a href="#devis" data-svc="Chauffe-eau"><span class="ic">🔥</span>Plus d’eau chaude</a>
+    </div>
+  </div>
+</div></section>
+
+<section id="services"><div class="wrap">
+  <div class="sec-h"><small>Nos services</small><h2>Tout ce qui touche à l’eau, chez vous ou dans vos immeubles</h2><p>Chaque service a sa propre page pour être bien trouvé sur Google à Istres, Martigues, Miramas et dans tout le secteur.</p></div>
+  <div class="services">
+    <div class="svc"><div class="ic">💧</div><h3>Dépannage & fuites</h3><p>Recherche de fuite, robinetterie, canalisations. Intervention rapide.</p><a href="#devis" data-svc="Fuite / dégât des eaux">Demander un devis →</a></div>
+    <div class="svc"><div class="ic">🚽</div><h3>Débouchage</h3><p>WC, éviers, douches, colonnes d’évacuation.</p><a href="#devis" data-svc="Débouchage">Demander un devis →</a></div>
+    <div class="svc"><div class="ic">🔥</div><h3>Chauffe-eau</h3><p>Remplacement, entretien, pannes de ballon électrique ou thermodynamique.</p><a href="#devis" data-svc="Chauffe-eau">Demander un devis →</a></div>
+    <div class="svc"><div class="ic">🛁</div><h3>Salle de bain</h3><p>Rénovation, receveur extra-plat, remplacement baignoire par douche.</p><a href="#devis" data-svc="Salle de bain">Demander un devis →</a></div>
+    <div class="svc"><div class="ic">🏢</div><h3>Agences & syndics</h3><p>Interventions pour vos locataires, avec compte rendu photo envoyé.</p><a href="#pros">En savoir plus →</a></div>
+    <div class="svc"><div class="ic">🔧</div><h3>Contrats d’entretien</h3><p>Visites régulières des colonnes, vannes et surpresseurs de résidences.</p><a href="#devis" data-svc="Contrat d’entretien">Demander un devis →</a></div>
+  </div>
+</div></section>
+
+<section class="pros" id="pros"><div class="wrap">
+  <div class="sec-h" style="margin:0"><small>Agences, syndics, bailleurs</small><h2>Vous savez toujours où en est l’intervention</h2>
+    <ul class="checks" style="margin-top:22px">
+      <li>Le technicien prévient l’occupant et arrive à l’heure prévue.</li>
+      <li>Photos avant / après et commentaire à la fin de chaque intervention.</li>
+      <li>Historique complet par adresse, conservé plusieurs années.</li>
+      <li>Un interlocuteur unique au bureau.</li>
+    </ul></div>
+  <div class="mock" aria-hidden="true">
+    <div class="line"><img src="" id="m1" alt=""><div><b>27 av. de la Crau, Istres</b>Contrôle colonnes · Mehdi</div><span class="pill cloturee">Terminée</span></div>
+    <div class="line"><img src="" id="m2" alt=""><div><b>2 quai Kléber, Martigues</b>Vanne d’arrêt · Julien + Thomas</div><span class="pill planifiee">Jeudi 9h</span></div>
+    <div class="line"><img src="" id="m3" alt=""><div><b>12 allée des Pins, Istres</b>Fuite évier · Karim</div><span class="pill controle">Aujourd’hui</span></div>
+  </div>
+</div></section>
+
+<section id="zones"><div class="wrap">
+  <div class="sec-h"><small>Zones d’intervention</small><h2>Istres et tout le pourtour de l’étang de Berre</h2><p>Une page par ville pour être bien placé quand on cherche « plombier + ville » sur Google.</p></div>
+  <div class="zones"><a class="main" href="#devis">Istres</a><a href="#devis">Martigues</a><a href="#devis">Miramas</a><a href="#devis">Fos-sur-Mer</a><a href="#devis">Saint-Chamas</a><a href="#devis">Grans</a><a href="#devis">Port-de-Bouc</a></div>
+</div></section>
+
+<section style="background:var(--bg)"><div class="wrap">
+  <div class="sec-h"><small>Avis clients</small><h2>Vos avis Google, affichés automatiquement</h2><p>Les vrais avis de votre fiche Google viendront se placer ici. Les cadres ci-dessous ne servent qu’à montrer l’emplacement.</p></div>
+  <div class="reviews">
+    <div class="rev"><span class="tag">Emplacement d’avis</span><div class="stars">★★★★★</div><p>Le texte d’un avis Google client s’affichera ici, avec son prénom et sa date.</p></div>
+    <div class="rev"><span class="tag">Emplacement d’avis</span><div class="stars">★★★★★</div><p>Le texte d’un avis Google client s’affichera ici, avec son prénom et sa date.</p></div>
+    <div class="rev"><span class="tag">Emplacement d’avis</span><div class="stars">★★★★★</div><p>Le texte d’un avis Google client s’affichera ici, avec son prénom et sa date.</p></div>
+  </div>
+</div></section>
+
+<section class="devis" id="devis"><div class="wrap">
+  <div class="sec-h"><small>Devis gratuit</small><h2>Décrivez votre besoin, on vous rappelle</h2><p>Votre demande arrive directement dans notre planning : pas d’e-mail perdu, pas d’oubli.</p>
+    <div class="steps"><div><b>1</b>Vous remplissez le formulaire (1 minute).</div><div><b>2</b>Le bureau la reçoit aussitôt et vous rappelle.</div><div><b>3</b>Un technicien est planifié, vous recevez l’horaire.</div></div></div>
+  <div id="formzone">
+    <form class="f" id="f">
+      <label>Nom<input name="nom" required autocomplete="name" placeholder="Votre nom"></label>
+      <label>Téléphone<input name="tel" required type="tel" autocomplete="tel" placeholder="06 …"></label>
+      <label>Ville<select name="ville"><option>Istres</option><option>Martigues</option><option>Miramas</option><option>Fos-sur-Mer</option><option>Saint-Chamas</option><option>Grans</option><option>Port-de-Bouc</option><option>Autre</option></select></label>
+      <label>Besoin<select name="service" id="svc"><option>Fuite / dégât des eaux</option><option>Débouchage</option><option>Chauffe-eau</option><option>Salle de bain</option><option>Contrat d’entretien</option><option>Autre</option></select></label>
+      <label class="full">Votre message<textarea name="message" required placeholder="Ex. : fuite sous l’évier depuis ce matin…"></textarea></label>
+      <p class="rgpd">Vos coordonnées servent uniquement à vous recontacter au sujet de votre demande.</p>
+      <button type="submit">Envoyer ma demande</button>
+    </form>
+  </div>
+</div></section>
+
+<footer class="site"><div class="wrap">
+  <div><b style="color:#fff">BK+ Plomberie</b><br>Istres (13800) · 04 42 XX XX XX</div>
+  <div><a href="#services">Services</a> · <a href="#zones">Zones</a> · <a href="#devis">Devis</a> · Mentions légales</div>
+  <div>Site réalisé par <a href="#">Les Monsieurs by Monsieur.H</a></div>
+</div></footer>
+
+<a class="mobile-call" href="tel:+33400000000">📞 Appeler BK+</a>
+
+<script src="data.js"></script>
+<script>
+document.getElementById('m1').src=BK.photo('',210);document.getElementById('m2').src=BK.photo('',30);document.getElementById('m3').src=BK.photo('',160);
+document.querySelectorAll('[data-svc]').forEach(a=>a.addEventListener('click',()=>{ document.getElementById('svc').value=a.dataset.svc; }));
+document.getElementById('f').onsubmit=e=>{
+  e.preventDefault(); const fd=new FormData(e.target), s=BK.get();
+  s.demandes.push({ id:BK.uid(), date:BK.todayIso(), nom:fd.get('nom'), tel:fd.get('tel'), ville:fd.get('ville'), service:fd.get('service'), message:fd.get('message'), traitee:false });
+  BK.save(s);
+  document.getElementById('formzone').innerHTML=`<div class="ok-box"><div class="big">✓</div><h3>Demande bien reçue</h3><p>Le bureau vous rappelle rapidement.</p>
+   <div style="background:var(--blue-50);border-radius:14px;padding:14px;color:var(--navy);font-size:15px;margin-bottom:16px"><b>Démo :</b> la demande vient d’arriver dans l’application, rubrique « Demandes du site ».</div>
+   <a class="btn primary" href="bureau.html#demandes">Voir l’écran du bureau →</a></div>`;
+};
+</script>
+</body>
+</html>

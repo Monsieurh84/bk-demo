@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0B2340">
+<title>Technicien · BK+ (démo)</title>
+<link rel="icon" href="favicon.svg">
+<link rel="stylesheet" href="app.css">
+<style>
+body{background:#DCE3EC}
+.stage{display:flex;justify-content:center;align-items:flex-start;padding:24px 16px 48px;gap:28px;flex-wrap:wrap}
+.ipad{width:820px;max-width:100%;height:1080px;max-height:calc(100vh - 110px);min-height:640px;background:#111;border-radius:42px;padding:18px;box-shadow:0 30px 80px rgba(11,35,64,.35)}
+.screen{background:#F3F5F8;border-radius:26px;height:100%;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.aside{max-width:300px;color:var(--navy);font-size:15px;line-height:1.5}
+.aside h2{font-size:20px;margin:6px 0 10px}
+.aside ol{padding-left:20px;margin:0 0 16px}
+.aside li{margin-bottom:8px}
+.aside .btn{width:100%;margin-bottom:8px}
+@media (max-width:1180px){.aside{display:none}}
+@media (max-width:860px){.stage{padding:0}.ipad{border-radius:0;padding:0;height:calc(100vh - 38px);max-height:none;min-height:0;box-shadow:none}.screen{border-radius:0}}
+/* Barre du haut */
+.top{background:var(--navy);color:#fff;padding:16px 22px;display:flex;align-items:center;gap:14px}
+.top .back{width:52px;height:52px;border-radius:14px;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:28px;line-height:1}
+.top h1{font-size:22px;margin:0;font-weight:800}
+.top small{display:block;font-size:14px;color:#AFC3DB;font-weight:600}
+.sync{margin-left:auto;display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;padding:10px 14px;border-radius:999px;background:rgba(14,159,110,.18);color:#7BE3B9;border:0}
+.sync i{width:10px;height:10px;border-radius:50%;background:currentColor}
+.sync.off{background:rgba(242,107,29,.2);color:#FFB98A}
+.sync.busy i{animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.2}}
+.scroll{flex:1;overflow:auto;padding:20px 22px 30px;-webkit-overflow-scrolling:touch}
+.tabs{display:flex;gap:10px;margin-bottom:18px}
+.tabs button{flex:1;height:58px;border-radius:16px;border:2px solid var(--line);background:#fff;font-size:19px;font-weight:800;color:var(--mute)}
+.tabs button.on{border-color:var(--navy);background:var(--navy);color:#fff}
+.daytitle{font-size:16px;font-weight:800;color:var(--mute);text-transform:uppercase;letter-spacing:.05em;margin:18px 4px 10px}
+.job{display:flex;align-items:stretch;gap:16px;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:20px;padding:18px 18px 18px 0;margin-bottom:14px;position:relative;overflow:hidden}
+.job::before{content:'';width:8px;background:var(--sc);flex:none}
+.job .h{font-size:26px;font-weight:800;min-width:92px;color:var(--navy)}
+.job .h small{display:block;font-size:15px;color:var(--mute);font-weight:700}
+.job .b{flex:1;min-width:0}
+.job .ad{font-size:21px;font-weight:800;line-height:1.25}
+.job .vi{font-size:17px;color:var(--mute);font-weight:600;margin-top:2px}
+.job .st{align-self:center;font-size:15px;font-weight:800;padding:8px 14px;border-radius:999px;white-space:nowrap}
+.job .chev{align-self:center;font-size:30px;color:#9AA8BA;padding-right:4px}
+.job.done{opacity:.6}
+.st.planifiee{background:var(--blue-50);color:var(--blue)} .st.encours{background:var(--warn-50);color:var(--warn)} .st.controle{background:var(--ok-50);color:var(--ok)} .st.cloturee{background:var(--ok-50);color:var(--ok)}
+.int{background:#F1EEFF;border-color:#DCD5FF}
+/* Fiche */
+.big-actions{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.bigbtn{height:84px;border-radius:20px;border:0;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:12px;text-decoration:none;color:#fff}
+.bigbtn svg{width:30px;height:30px}
+.call{background:var(--ok)} .route{background:var(--blue)}
+.panel{background:#fff;border:2px solid var(--line);border-radius:20px;padding:18px 20px;margin-bottom:14px}
+.panel h3{margin:0 0 8px;font-size:15px;color:var(--mute);text-transform:uppercase;letter-spacing:.05em}
+.panel p{margin:0;font-size:20px;line-height:1.4;font-weight:600}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;font-size:19px}
+.facts dt{color:var(--mute);font-weight:700}
+.facts dd{margin:0;font-weight:800}
+.photo-btn{width:100%;height:96px;border-radius:20px;border:3px dashed #9DB7DA;background:var(--blue-50);color:var(--blue);font-size:23px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer}
+.photo-btn svg{width:34px;height:34px}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.thumbs div{position:relative}
+.thumbs img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px}
+.thumbs button{position:absolute;top:6px;right:6px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:22px}
+.cmt{display:flex;gap:10px}
+.cmt textarea{flex:1;min-height:120px;border:2px solid var(--line);border-radius:16px;padding:14px;font-size:19px;resize:vertical}
+.mic{width:84px;border-radius:16px;border:0;background:var(--navy);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-weight:800;font-size:14px}
+.mic svg{width:30px;height:30px}
+.mic.rec{background:var(--err);animation:pulse 1.2s infinite}
+.validate{position:sticky;bottom:0;padding:14px 22px 20px;background:linear-gradient(transparent,#F3F5F8 24%)}
+.validate button{width:100%;height:90px;border-radius:22px;border:0;font-size:26px;font-weight:800;background:var(--orange);color:#fff;box-shadow:0 8px 24px rgba(242,107,29,.35)}
+.validate button.ready{background:var(--ok);box-shadow:0 8px 24px rgba(14,159,110,.35)}
+.need{display:flex;gap:10px;justify-content:center;margin-bottom:10px;flex-wrap:wrap}
+.need span{font-size:16px;font-weight:800;padding:8px 14px;border-radius:999px;background:#fff;border:2px solid var(--line);color:var(--mute)}
+.need span.ok{border-color:var(--ok);color:var(--ok);background:var(--ok-50)}
+.alert{background:var(--err-50);color:var(--err);border-radius:16px;padding:16px 18px;font-size:19px;font-weight:800;margin-bottom:12px;display:none}
+.alert.show{display:block}
+.done-box{background:var(--ok-50);border:2px solid #A7E3C9;color:#065F46;border-radius:20px;padding:20px;font-size:20px;font-weight:800;text-align:center;margin-bottom:14px}
+.who{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.who button{height:50px;padding:0 16px;border-radius:14px;border:2px solid var(--line);background:#fff;font-weight:800;font-size:17px;display:flex;align-items:center;gap:8px}
+.who button.on{border-color:var(--navy)}
+.who i{width:12px;height:12px;border-radius:50%}
+.binome{display:inline-flex;align-items:center;gap:8px;background:#FFF1E8;color:var(--orange-d);font-weight:800;font-size:18px;padding:8px 14px;border-radius:999px;margin-bottom:14px}
+@media (max-width:600px){.job{gap:12px;padding:14px 12px 14px 0}.job .h{min-width:70px;font-size:21px}.job .ad{font-size:18px}.job .vi{font-size:15px}.job .st{display:none}.who button{height:44px;font-size:15px;padding:0 12px}.top{padding:14px 16px}.top h1{font-size:19px}.scroll{padding:16px}.big-actions{gap:10px}.bigbtn{height:72px;font-size:19px}}
+.screen .toast{position:absolute;font-size:18px;padding:16px 22px}
+</style>
+</head>
+<body>
+<div class="demo-bar"><span><b>Démo</b> · Écran du technicien (iPad) · données fictives</span>
+  <nav><a href="index.html">Accueil démo</a><a href="site.html">Site vitrine</a><a href="bureau.html">Bureau</a><a href="technicien.html" aria-current="page">Technicien (iPad)</a></nav></div>
+
+<div class="stage">
+  <div class="ipad"><div class="screen" id="screen"></div></div>
+  <div class="aside">
+    <h2>Essayez comme un technicien</h2>
+    <ol>
+      <li>Touchez l’intervention de <b>8h00</b>.</li>
+      <li>Essayez <b>Valider</b> tout de suite : l’app vous rappelle ce qui manque.</li>
+      <li>Ajoutez une photo et un commentaire (au micro si votre navigateur le permet).</li>
+      <li>Validez : elle part au bureau, dans « À contrôler ».</li>
+    </ol>
+    <button class="btn" id="net">📶 Simuler une coupure de réseau</button>
+    <a class="btn primary" href="bureau.html#controle" target="_blank">Voir l’écran du bureau ↗</a>
+    <p style="font-size:13px;color:var(--mute)">Astuce : ouvrez le bureau dans un 2ᵉ onglet, côte à côte. Les mises à jour arrivent en temps réel.</p>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+const $=s=>document.querySelector(s), E=BK.esc, scr=$('#screen');
+let me='karim', tab='jour', openId=null, online=true, pending=0, draft={};
+function S(){return BK.get();}
+function toast(m){ let t=scr.querySelector('.toast'); if(!t){t=document.createElement('div');t.className='toast';scr.appendChild(t);} t.textContent=m; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2600); }
+const ICON={
+  phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>',
+  route:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>',
+  cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+  mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4"/></svg>'
+};
+function syncHtml(){
+  if(!online) return `<button class="sync off" id="sync"><i></i>Hors connexion${pending?' · '+pending+' en attente':''}</button>`;
+  return `<button class="sync" id="sync"><i></i>Synchronisé</button>`;
+}
+function bindTop(){ const b=$('#sync'); if(b) b.onclick=toggleNet; const back=$('#back'); if(back) back.onclick=()=>{openId=null; render();}; }
+
+function list(){
+  const s=S(), t=BK.tech(me), today=BK.todayIso();
+  const mine=s.interventions.filter(i=>i.techs.includes(me) && i.statut!=='cloturee');
+  let days;
+  if(tab==='jour') days=[today];
+  else { const m=BK.monday(new Date(today+'T12:00')); days=[...Array(6)].map((_,k)=>BK.iso(BK.addDays(m,k))); }
+  const block=d=>{
+    const it=mine.filter(i=>i.date===d).sort((a,b)=>a.start.localeCompare(b.start));
+    const abs=s.absences.find(a=>a.tech===me&&a.date===d);
+    return `${tab==='semaine'?`<div class="daytitle">${BK.label(d,true)}${d===today?' · aujourd’hui':''}</div>`:''}` + (abs?`<div class="panel"><p>🌴 ${E(abs.label)}</p></div>`:'') +
+      (it.length? it.map(i=>{
+        const st = i.statut==='controle'?'Terminée':BK.STATUTS[i.statut];
+        const sc = {planifiee:'#1565D8',encours:'#B45309',controle:'#0E9F6E'}[i.statut]||'#1565D8';
+        return `<button class="job ${i.type==='interne'?'int':''} ${i.statut==='controle'?'done':''}" data-id="${i.id}" style="--sc:${sc}">
+          <div class="h">${BK.hh(i.start)}<small>${BK.endTime(i.start,i.dur)}</small></div>
+          <div class="b"><div class="ad">${i.type==='interne'?'Tâche interne':E(i.adresse)}</div><div class="vi">${i.type==='interne'?E(i.travaux):E(i.ville)+(i.techs.length>1?' · 👥 avec '+i.techs.filter(x=>x!==me).map(x=>BK.tech(x).nom).join(', '):'')}</div></div>
+          ${i.type==='interne'?'':`<span class="st ${i.statut}">${st}</span>`}<span class="chev">›</span></button>`;}).join('') : (abs?'':`<div class="panel"><p style="color:var(--mute)">Rien de prévu.</p></div>`));
+  };
+  const nb=mine.filter(i=>i.date===today && i.statut!=='controle' && i.type!=='interne').length;
+  scr.innerHTML = `<div class="top"><div><h1>Bonjour ${t.nom} 👋</h1><small>${BK.label(today,true)} · ${nb} intervention${nb>1?'s':''} à faire</small></div>${syncHtml()}</div>
+    <div class="scroll">
+      <div class="who" aria-label="Changer de technicien (démo)">${s.techs.map(x=>`<button data-me="${x.id}" class="${x.id===me?'on':''}"><i style="background:${x.couleur}"></i>${x.nom}</button>`).join('')}</div>
+      <div class="tabs" style="margin-top:14px"><button data-tab="jour" class="${tab==='jour'?'on':''}">Aujourd’hui</button><button data-tab="semaine" class="${tab==='semaine'?'on':''}">Ma semaine</button></div>
+      ${days.map(block).join('')}
+    </div>`;
+  scr.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>{ openId=b.dataset.id; render(); scr.querySelector('.scroll').scrollTop=0; });
+  scr.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{ tab=b.dataset.tab; render(); });
+  scr.querySelectorAll('[data-me]').forEach(b=>b.onclick=()=>{ me=b.dataset.me; render(); });
+  bindTop();
+}
+
+function fiche(){
+  const s=S(), i=s.interventions.find(x=>x.id===openId); if(!i){ openId=null; return list(); }
+  const d = draft[i.id] = draft[i.id] || { photos:[...i.photos], commentaire:i.commentaire };
+  const done = i.statut==='controle'||i.statut==='cloturee';
+  const others=i.techs.filter(x=>x!==me);
+  const maps='https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(i.adresse+', '+i.ville);
+  scr.innerHTML = `<div class="top"><button class="back" id="back" aria-label="Retour">‹</button><div><h1>${BK.hh(i.start)} · ${i.type==='interne'?'Tâche interne':E(i.ville)}</h1><small>${BK.label(i.date,true)}</small></div>${syncHtml()}</div>
+   <div class="scroll">
+     ${done?`<div class="done-box">✓ Intervention terminée et envoyée au bureau</div>`:''}
+     <div class="panel" style="border-color:var(--navy)"><p style="font-size:26px;font-weight:800">${E(i.adresse)}</p><p style="color:var(--mute);font-size:19px">${E(i.ville)}</p></div>
+     ${others.length?`<div class="binome">👥 En binôme avec ${others.map(x=>BK.tech(x).nom).join(', ')}</div>`:''}
+     ${i.type==='interne'?'':`<div class="big-actions"><a class="bigbtn call" href="tel:${E(i.tel)}">${ICON.phone}Appeler</a><a class="bigbtn route" href="${maps}" target="_blank" rel="noopener">${ICON.route}Itinéraire</a></div>
+     <div class="panel"><dl class="facts"><dt>Occupant</dt><dd>${E(i.occupant)}</dd><dt>Agence</dt><dd>${E(i.agence)}</dd><dt>Horaires</dt><dd>${BK.hh(i.start)} – ${BK.endTime(i.start,i.dur)}</dd></dl></div>`}
+     <div class="panel"><h3>Travaux à faire</h3><p>${E(i.travaux)}</p></div>
+     ${i.type==='interne'?'':`
+     <div class="panel"><h3>Photos</h3>
+       ${done?'':`<label class="photo-btn">${ICON.cam}Prendre une photo<input type="file" accept="image/*" capture="environment" class="sr" id="cam"></label>`}
+       <div class="thumbs">${d.photos.map((p,k)=>`<div><img src="${p}" alt="Photo ${k+1}">${done?'':`<button data-rm="${k}" aria-label="Supprimer la photo">×</button>`}</div>`).join('')}</div>
+     </div>
+     <div class="panel"><h3>Commentaire</h3>
+       ${done?`<p>${E(d.commentaire)}</p>`:`<div class="cmt"><textarea id="cmt" placeholder="Ce qui a été fait, ce qui reste à prévoir…">${E(d.commentaire)}</textarea><button class="mic" id="mic">${ICON.mic}Dicter</button></div>`}
+     </div>`}
+   </div>
+   ${done||i.type==='interne'?'':`<div class="validate"><div class="alert" id="alert"></div><div class="need"><span id="n1" class="${d.photos.length?'ok':''}">${d.photos.length?'✓':'○'} Au moins 1 photo</span><span id="n2" class="${d.commentaire.trim()?'ok':''}">${d.commentaire.trim()?'✓':'○'} Un commentaire</span></div><button id="ok" class="${d.photos.length&&d.commentaire.trim()?'ready':''}">Valider l’intervention</button></div>`}`;
+  bindTop();
+  if(done||i.type==='interne') return;
+  const upd=()=>{ const ok1=d.photos.length>0, ok2=d.commentaire.trim().length>0;
+    $('#n1').className=ok1?'ok':''; $('#n1').textContent=(ok1?'✓':'○')+' Au moins 1 photo';
+    $('#n2').className=ok2?'ok':''; $('#n2').textContent=(ok2?'✓':'○')+' Un commentaire';
+    $('#ok').classList.toggle('ready',ok1&&ok2); if(ok1&&ok2) $('#alert').classList.remove('show'); };
+  $('#cam').onchange=e=>{ const f=e.target.files[0]; if(!f) return; resize(f).then(url=>{ d.photos.push(url); if(i.statut==='planifiee') { i.statut='encours'; BK.save(s);} fiche(); toast('Photo enregistrée'); }); };
+  scr.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{ d.photos.splice(+b.dataset.rm,1); fiche(); });
+  $('#cmt').oninput=e=>{ d.commentaire=e.target.value; upd(); };
+  $('#mic').onclick=dictate;
+  $('#ok').onclick=()=>{
+    const miss=[]; if(!d.photos.length) miss.push('au moins une photo'); if(!d.commentaire.trim()) miss.push('un commentaire');
+    if(miss.length){ const a=$('#alert'); a.textContent='Ajoutez '+miss.join(' et ')+' pour valider.'; a.classList.add('show'); return; }
+    Object.assign(i,{photos:d.photos, commentaire:d.commentaire, statut:'controle'}); delete draft[i.id];
+    if(online){ BK.save(s); toast('✓ Envoyée au bureau'); }
+    else { pending++; window._queue=(window._queue||[]).concat([()=>BK.save(s)]); toast('Enregistrée sur l’iPad · envoi au retour du réseau'); }
+    openId=null; render();
+  };
+}
+function resize(file){ return new Promise(res=>{ const img=new Image(), r=new FileReader(); r.onload=()=>{ img.onload=()=>{ const c=document.createElement('canvas'), k=Math.min(1,640/Math.max(img.width,img.height)); c.width=img.width*k; c.height=img.height*k; c.getContext('2d').drawImage(img,0,0,c.width,c.height); res(c.toDataURL('image/jpeg',.72)); }; img.src=r.result; }; r.readAsDataURL(file); }); }
+let rec=null;
+function dictate(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition, b=$('#mic');
+  if(!SR){ toast('Sur iPad : touchez le micro 🎤 du clavier pour dicter'); $('#cmt').focus(); return; }
+  if(rec){ rec.stop(); return; }
+  rec=new SR(); rec.lang='fr-FR'; rec.interimResults=false; b.classList.add('rec');
+  rec.onresult=e=>{ const t=[...e.results].map(r=>r[0].transcript).join(' '); const ta=$('#cmt'); ta.value=(ta.value?ta.value+' ':'')+t; ta.dispatchEvent(new Event('input')); };
+  rec.onend=()=>{ rec=null; const m=$('#mic'); if(m) m.classList.remove('rec'); };
+  rec.onerror=()=>toast('Micro indisponible — utilisez le micro du clavier');
+  rec.start();
+}
+function toggleNet(){
+  online=!online; $('#net').textContent= online?'📶 Simuler une coupure de réseau':'📶 Rétablir le réseau';
+  if(online && pending){ render(); const b=$('#sync'); b.classList.add('busy'); b.innerHTML='<i></i>Envoi en cours…'; setTimeout(()=>{ (window._queue||[]).forEach(f=>f()); window._queue=[]; const n=pending; pending=0; render(); toast(`✓ ${n} intervention${n>1?'s':''} envoyée${n>1?'s':''} au bureau`); },1400); }
+  else { render(); toast(online?'Réseau rétabli':'Plus de réseau : tout continue de fonctionner'); }
+}
+$('#net').onclick=toggleNet;
+window.addEventListener('offline',()=>{ if(online) toggleNet(); });
+window.addEventListener('online',()=>{ if(!online) toggleNet(); });
+BK.onChange(()=>{ if(!openId) render(); toast('Planning mis à jour par le bureau'); });
+function render(){ openId?fiche():list(); }
+render();
+</script>
+</body>
+</html>

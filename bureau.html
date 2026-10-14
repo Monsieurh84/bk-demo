@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Bureau · Planning BK+ (démo)</title>
+<link rel="icon" href="favicon.svg">
+<link rel="stylesheet" href="app.css">
+<style>
+.app{display:grid;grid-template-columns:232px 1fr;min-height:calc(100vh - 38px)}
+.side{background:#fff;border-right:1px solid var(--line);padding:18px 12px;display:flex;flex-direction:column;gap:4px}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 10px 18px;font-weight:800;font-size:18px}
+.brand .logo{width:34px;height:34px;border-radius:9px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:14px;letter-spacing:-.5px}
+.brand small{display:block;font-size:11px;color:var(--mute);font-weight:600}
+.nav{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:0;background:none;text-align:left;font-weight:600;color:var(--mute);width:100%}
+.nav:hover{background:var(--bg);color:var(--ink)}
+.nav.on{background:var(--blue-50);color:var(--blue)}
+.nav .count{margin-left:auto;background:var(--orange);color:#fff;font-size:11px;font-weight:800;min-width:20px;height:20px;border-radius:10px;display:grid;place-items:center;padding:0 6px}
+.nav .count:empty{display:none}
+.nav svg{width:18px;height:18px;flex:none}
+.side .who{margin-top:auto;font-size:13px;color:var(--mute);padding:10px 12px;border-top:1px solid var(--line)}
+.main{padding:22px 26px;min-width:0}
+.head{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.head h1{font-size:22px;margin:0;margin-right:auto}
+.seg{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;padding:6px 12px;border-radius:7px;font-weight:600;color:var(--mute)}
+.seg button.on{background:var(--navy);color:#fff}
+.weeknav{display:flex;align-items:center;gap:6px;font-weight:700}
+.weeknav button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:#fff}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--mute);margin:-6px 0 14px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.grid{display:grid;grid-template-columns:150px repeat(6,minmax(130px,1fr));background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:auto;box-shadow:var(--sh)}
+.gh{position:sticky;top:0;background:#FAFBFC;border-bottom:1px solid var(--line);padding:10px;font-size:13px;font-weight:700;color:var(--mute);text-align:center}
+.gh.today{color:var(--blue)}
+.gh.today span{background:var(--blue);color:#fff;border-radius:6px;padding:1px 6px}
+.tn{padding:12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);font-weight:700;display:flex;align-items:center;gap:8px;background:#FAFBFC}
+.tn i{width:12px;height:12px;border-radius:4px}
+.cell{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:6px;min-height:104px;display:flex;flex-direction:column;gap:6px;transition:background .15s}
+.cell.today{background:#F7FAFF}
+.cell.over{background:var(--blue-50);outline:2px dashed var(--blue);outline-offset:-4px}
+.cell.abs{background:repeating-linear-gradient(-45deg,#F4F4F6 0 8px,#ECEDF1 8px 16px)}
+.abs-label{font-size:12px;font-weight:700;color:var(--mute);text-align:center;padding-top:30px}
+.card{background:#fff;border:1px solid var(--line);border-left:4px solid var(--c);border-radius:9px;padding:7px 8px;font-size:12px;cursor:grab;box-shadow:0 1px 2px rgba(0,0,0,.04);user-select:none}
+.card:hover{border-color:#C8D2DF;border-left-color:var(--c)}
+.card.dragging{opacity:.4}
+.card .t{font-weight:800;display:flex;align-items:center;gap:5px}
+.card .t .ico{margin-left:auto;display:flex;gap:3px;color:var(--mute)}
+.card .a{color:var(--ink);font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .g{color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card.interne{background:#F6F4FF;border-left-color:#8B8FA3}
+.card.cloturee{opacity:.6}
+.card .dot{width:8px;height:8px;border-radius:50%;background:var(--sc)}
+.dayview{display:grid;grid-template-columns:repeat(5,minmax(180px,1fr));gap:12px;overflow:auto}
+.dcol{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:10px;display:flex;flex-direction:column;gap:8px;min-height:300px}
+.dcol h3{margin:2px 4px 6px;font-size:14px;display:flex;align-items:center;gap:8px}
+.dcol h3 i{width:12px;height:12px;border-radius:4px}
+.list{display:flex;flex-direction:column;gap:12px}
+.row{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;grid-template-columns:1fr auto;gap:12px;box-shadow:var(--sh)}
+.row h3{margin:0 0 4px;font-size:16px}
+.row .meta{color:var(--mute);font-size:13px}
+.row .acts{display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;justify-content:flex-end}
+.photos{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.photos img{width:120px;height:90px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+.comment{background:var(--bg);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:14px}
+.empty{background:#fff;border:1px dashed #C8D2DF;border-radius:var(--r);padding:40px;text-align:center;color:var(--mute)}
+.search{display:flex;gap:10px;margin-bottom:16px}
+.search input{flex:1;border:1px solid var(--line);border-radius:10px;padding:11px 14px;background:#fff}
+.timeline{border-left:2px solid var(--line);margin-left:8px;padding-left:18px;display:flex;flex-direction:column;gap:14px}
+.timeline .row{position:relative}
+.timeline .row::before{content:'';position:absolute;left:-26px;top:20px;width:12px;height:12px;border-radius:50%;background:var(--ok);border:2px solid #fff}
+/* Panneau latéral */
+.scrim{position:fixed;inset:0;background:rgba(11,35,64,.35);opacity:0;pointer-events:none;transition:.2s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(460px,100%);background:#fff;z-index:41;transform:translateX(100%);transition:.25s;display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,0,0,.12)}
+.drawer:not(.on){visibility:hidden;transition:transform .25s,visibility 0s .25s}
+.drawer.on{transform:none}
+.drawer header{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:10px}
+.drawer header h2{margin:0;font-size:18px}
+.drawer .x{margin-left:auto;border:0;background:var(--bg);width:34px;height:34px;border-radius:9px;font-size:18px}
+.drawer .body{padding:18px 20px;overflow:auto;flex:1;display:flex;flex-direction:column;gap:14px}
+.drawer footer{padding:14px 20px;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:8px 10px;font-size:14px}
+.kv dt{color:var(--mute);font-weight:600}
+.kv dd{margin:0;font-weight:600}
+.box{border:1px solid var(--line);border-radius:12px;padding:12px}
+.box h4{margin:0 0 6px;font-size:13px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
+.private{background:#FFF8F2;border-color:#FAD7BF}
+.private h4{color:var(--orange-d)}
+.techchips{display:flex;gap:6px;flex-wrap:wrap}
+.techchips span{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border-radius:999px;padding:3px 10px 3px 6px;font-weight:700;font-size:13px}
+.techchips i{width:10px;height:10px;border-radius:50%}
+/* Formulaire */
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:700;color:var(--mute)}
+.form .full{grid-column:1/-1}
+.form input,.form select,.form textarea{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;font-weight:500;color:var(--ink)}
+.form textarea{min-height:80px;resize:vertical}
+.checks{display:flex;gap:8px;flex-wrap:wrap}
+.checks label{flex-direction:row;align-items:center;gap:6px;background:var(--bg);padding:6px 10px;border-radius:999px;color:var(--ink);cursor:pointer}
+.inline{flex-direction:row!important;align-items:center;gap:8px!important;color:var(--ink)!important}
+.pdf{background:#fff;border:1px solid var(--line);border-radius:6px;padding:16px;font-size:12px;box-shadow:var(--sh)}
+.pdf .l{height:8px;background:#E8ECF2;border-radius:4px;margin:6px 0}
+.hint{background:var(--blue-50);color:var(--navy-2);border-radius:12px;padding:12px 14px;font-size:14px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
+@media (max-width:900px){.app{grid-template-columns:1fr}.side{flex-direction:row;overflow:auto;padding:8px}.brand,.side .who{display:none}.nav{width:auto;white-space:nowrap}.main{padding:16px}}
+</style>
+</head>
+<body>
+<div class="demo-bar"><span><b>Démo</b> · Écran du bureau (Mac) · données fictives</span>
+  <nav><a href="index.html">Accueil démo</a><a href="site.html">Site vitrine</a><a href="bureau.html" aria-current="page">Bureau</a><a href="technicien.html">Technicien (iPad)</a></nav></div>
+
+<div class="app">
+  <aside class="side">
+    <div class="brand"><div class="logo">BK+</div><div>BK+ Planning<small>Istres</small></div></div>
+    <button class="nav on" data-view="planning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Planning</button>
+    <button class="nav" data-view="controle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>À contrôler<span class="count" id="c-controle"></span></button>
+    <button class="nav" data-view="demandes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v12H5.2L4 17.2z"/><path d="M8 9h8M8 12h5"/></svg>Demandes du site<span class="count" id="c-demandes"></span></button>
+    <button class="nav" data-view="historique"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 3"/></svg>Historique</button>
+    <div class="who">Connecté : <b>Bureau</b><br><a href="#" id="reset">Réinitialiser la démo</a></div>
+  </aside>
+  <main class="main" id="main"></main>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true"></aside>
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script>
+const $ = s => document.querySelector(s), E = BK.esc;
+let view = 'planning', mode = 'semaine', weekStart = BK.monday(new Date(BK.todayIso())), dayIso = BK.todayIso(), q = '';
+function S(){ return BK.get(); }
+function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2600); }
+
+function counts(){
+  const s=S();
+  $('#c-controle').textContent = s.interventions.filter(i=>i.statut==='controle').length || '';
+  $('#c-demandes').textContent = s.demandes.filter(d=>!d.traitee).length || '';
+}
+function render(){
+  counts();
+  document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('on', b.dataset.view===view));
+  ({planning, controle, demandes, historique})[view]();
+}
+
+/* ---------- Planning ---------- */
+function cardHtml(i, techId){
+  const t = BK.tech(techId) || {couleur:'#8B8FA3'};
+  const bin = i.techs.length>1 ? `<span title="Binôme : ${E(i.techs.map(x=>BK.tech(x).nom).join(' + '))}">👥</span>` : '';
+  const rec = i.recurrent ? '<span title="Contrat d’entretien récurrent">↻</span>' : '';
+  const pdf = i.devisPdf ? '<span title="Devis client joint (bureau)">📄</span>' : '';
+  const sc = {planifiee:'#1565D8',encours:'#B45309',controle:'#F26B1D',cloturee:'#0E9F6E'}[i.statut];
+  return `<div class="card ${i.type==='interne'?'interne':''} ${i.statut==='cloturee'?'cloturee':''}" draggable="true" data-id="${i.id}" data-tech="${techId}" style="--c:${t.couleur};--sc:${sc}">
+    <div class="t"><span class="dot" title="${BK.STATUTS[i.statut]}"></span>${BK.hh(i.start)}–${BK.endTime(i.start,i.dur)}<span class="ico">${bin}${rec}${pdf}</span></div>
+    <div class="a">${i.type==='interne'?'Tâche interne':E(i.ville)}</div>
+    <div class="g">${i.type==='interne'?E(i.travaux):E(i.agence)}</div></div>`;
+}
+function planning(){
+  const s=S(), days=[...Array(6)].map((_,k)=>BK.iso(BK.addDays(weekStart,k))), today=BK.todayIso();
+  const title = mode==='semaine' ? `Semaine du ${BK.label(days[0])}` : BK.label(dayIso,true);
+  let html = `<div class="head"><h1>Planning</h1>
+    <div class="weeknav"><button id="prev" aria-label="Précédent">‹</button><span>${title}</span><button id="next" aria-label="Suivant">›</button></div>
+    <div class="seg"><button data-mode="jour" class="${mode==='jour'?'on':''}">Jour</button><button data-mode="semaine" class="${mode==='semaine'?'on':''}">Semaine</button></div>
+    <button class="btn orange" id="new">+ Nouvelle intervention</button></div>
+    <div class="legend">${s.techs.map(t=>`<span><i style="background:${t.couleur}"></i>${t.nom}</span>`).join('')}<span>👥 binôme</span><span>↻ récurrente</span><span>📄 devis joint</span></div>`;
+  if(mode==='semaine'){
+    html += `<div class="hint">💡 <span>Glissez une intervention vers un autre jour ou un autre technicien pour la reprogrammer. Le technicien la voit aussitôt sur son iPad.</span></div><div class="grid"><div class="gh"></div>`;
+    days.forEach(d=> html += `<div class="gh ${d===today?'today':''}">${d===today?'<span>'+BK.label(d)+'</span>':BK.label(d)}</div>`);
+    s.techs.forEach(t=>{
+      html += `<div class="tn"><i style="background:${t.couleur}"></i>${t.nom}</div>`;
+      days.forEach(d=>{
+        const abs = s.absences.find(a=>a.tech===t.id && a.date===d);
+        const items = s.interventions.filter(i=>i.date===d && i.techs.includes(t.id)).sort((a,b)=>a.start.localeCompare(b.start));
+        html += `<div class="cell ${d===today?'today':''} ${abs?'abs':''}" data-date="${d}" data-tech="${t.id}">${abs?`<div class="abs-label">🌴 ${E(abs.label)}</div>`:''}${items.map(i=>cardHtml(i,t.id)).join('')}</div>`;
+      });
+    });
+    html += `</div>`;
+  } else {
+    html += `<div class="dayview">` + s.techs.map(t=>{
+      const abs = s.absences.find(a=>a.tech===t.id && a.date===dayIso);
+      const items = s.interventions.filter(i=>i.date===dayIso && i.techs.includes(t.id)).sort((a,b)=>a.start.localeCompare(b.start));
+      return `<div class="dcol cell" data-date="${dayIso}" data-tech="${t.id}"><h3><i style="background:${t.couleur}"></i>${t.nom}</h3>${abs?`<div class="abs-label">🌴 ${E(abs.label)}</div>`:''}${items.map(i=>cardHtml(i,t.id)).join('') || (abs?'':'<div class="g" style="color:var(--mute);font-size:13px;padding:6px">Disponible</div>')}</div>`;
+    }).join('') + `</div>`;
+  }
+  $('#main').innerHTML = html;
+  $('#prev').onclick=()=>{ if(mode==='semaine') weekStart=BK.addDays(weekStart,-7); else dayIso=BK.iso(BK.addDays(new Date(dayIso+'T12:00'),-1)); render(); };
+  $('#next').onclick=()=>{ if(mode==='semaine') weekStart=BK.addDays(weekStart,7); else dayIso=BK.iso(BK.addDays(new Date(dayIso+'T12:00'),1)); render(); };
+  document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode; render();});
+  $('#new').onclick=()=>openForm();
+  bindCards();
+}
+function bindCards(){
+  document.querySelectorAll('.card').forEach(c=>{
+    c.onclick=()=>openDetail(c.dataset.id);
+    c.ondragstart=e=>{ c.classList.add('dragging'); e.dataTransfer.setData('text/plain', c.dataset.id+'|'+c.dataset.tech); };
+    c.ondragend=()=>c.classList.remove('dragging');
+  });
+  document.querySelectorAll('.cell').forEach(cell=>{
+    cell.ondragover=e=>{e.preventDefault(); cell.classList.add('over');};
+    cell.ondragleave=()=>cell.classList.remove('over');
+    cell.ondrop=e=>{
+      e.preventDefault(); cell.classList.remove('over');
+      const [id,from]=e.dataTransfer.getData('text/plain').split('|'); const s=S(); const i=s.interventions.find(x=>x.id===id); if(!i) return;
+      const to=cell.dataset.tech, d=cell.dataset.date;
+      if(s.absences.find(a=>a.tech===to && a.date===d)){ toast(`${BK.tech(to).nom} est absent ce jour-là`); return; }
+      if(from!==to){ i.techs = i.techs.filter(x=>x!==from); if(!i.techs.includes(to)) i.techs.push(to); }
+      i.date=d; BK.save(s); render(); toast(`Reprogrammée : ${BK.label(d,true)} · ${i.techs.map(x=>BK.tech(x).nom).join(' + ')}`);
+    };
+  });
+}
+
+/* ---------- Détail ---------- */
+function openDrawer(html){ const d=$('#drawer'); d.innerHTML=html; d.classList.add('on'); d.setAttribute('aria-hidden','false'); $('#scrim').classList.add('on'); d.querySelector('.x').onclick=closeDrawer; }
+function closeDrawer(){ $('#drawer').classList.remove('on'); $('#drawer').setAttribute('aria-hidden','true'); $('#scrim').classList.remove('on'); }
+$('#scrim').onclick=closeDrawer;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDrawer(); });
+
+function openDetail(id){
+  const s=S(), i=s.interventions.find(x=>x.id===id); if(!i) return;
+  openDrawer(`<header><div><span class="pill ${i.statut}">${BK.STATUTS[i.statut]}</span><h2 style="margin-top:8px">${i.type==='interne'?'Tâche interne':E(i.adresse)}</h2><div class="meta" style="color:var(--mute)">${E(i.ville)} · ${BK.label(i.date,true)} · ${BK.hh(i.start)}–${BK.endTime(i.start,i.dur)}</div></div><button class="x" aria-label="Fermer">×</button></header>
+  <div class="body">
+    <div class="techchips">${i.techs.map(x=>{const t=BK.tech(x);return `<span><i style="background:${t.couleur}"></i>${t.nom}</span>`}).join('')}${i.recurrent?'<span>↻ Récurrente (contrat)</span>':''}</div>
+    ${i.type==='interne'?'':`<dl class="kv"><dt>Agence</dt><dd>${E(i.agence)}</dd><dt>Occupant</dt><dd>${E(i.occupant)}</dd><dt>Téléphone</dt><dd><a href="tel:${E(i.tel)}">${E(i.tel.replace(/(\d{2})(?=\d)/g,'$1 '))}</a></dd><dt>Adresse</dt><dd>${E(i.adresse)}, ${E(i.ville)}</dd></dl>`}
+    <div class="box"><h4>Travaux à effectuer</h4>${E(i.travaux)}</div>
+    ${i.type==='interne'?'':`<div class="box private"><h4>🔒 Devis client — visible uniquement par le bureau</h4>${i.devisPdf?`<div class="pdf"><b>DEVIS N° ${id.toUpperCase()}</b><div class="l" style="width:70%"></div><div class="l"></div><div class="l" style="width:85%"></div><div class="l" style="width:40%"></div></div>`:'<span style="color:var(--mute);font-size:14px">Aucun devis joint.</span>'} <label class="btn" style="margin-top:10px">📎 ${i.devisPdf?'Remplacer':'Joindre'} le devis PDF<input type="file" accept="application/pdf" class="sr" id="pdfin"></label></div>`}
+    ${i.photos.length||i.commentaire?`<div class="box"><h4>Retour du technicien</h4>${i.commentaire?`<div>${E(i.commentaire)}</div>`:''}<div class="photos">${i.photos.map(p=>`<img src="${p}" alt="Photo d’intervention">`).join('')}</div></div>`:''}
+    <label style="font-size:13px;font-weight:700;color:var(--mute)">Statut<br><select id="st" style="margin-top:6px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;width:100%">${Object.entries(BK.STATUTS).map(([k,v])=>`<option value="${k}" ${k===i.statut?'selected':''}>${v}</option>`).join('')}</select></label>
+  </div>
+  <footer>${i.statut==='controle'?'<button class="btn ok" id="close">✓ Clôturer l’intervention</button>':''}<button class="btn" id="edit">Modifier</button><button class="btn" id="dup">Reprogrammer +7 j</button><button class="btn" id="del" style="margin-left:auto;color:var(--err)">Supprimer</button></footer>`);
+  const pdfin=$('#pdfin'); if(pdfin) pdfin.onchange=()=>{ i.devisPdf=true; BK.save(s); openDetail(id); render(); toast('Devis joint — invisible pour les techniciens'); };
+  $('#st').onchange=e=>{ i.statut=e.target.value; BK.save(s); render(); openDetail(id); };
+  const c=$('#close'); if(c) c.onclick=()=>{ i.statut='cloturee'; BK.save(s); closeDrawer(); render(); toast('Intervention clôturée et archivée dans l’historique'); };
+  $('#edit').onclick=()=>openForm(i);
+  $('#dup').onclick=()=>{ i.date=BK.iso(BK.addDays(new Date(i.date+'T12:00'),7)); BK.save(s); closeDrawer(); render(); toast('Reprogrammée la semaine suivante'); };
+  $('#del').onclick=()=>{ if(confirm('Supprimer cette intervention ?')){ s.interventions=s.interventions.filter(x=>x.id!==id); BK.save(s); closeDrawer(); render(); toast('Intervention supprimée'); } };
+}
+
+/* ---------- Formulaire ---------- */
+function openForm(i, demande){
+  const s=S(), isNew=!i;
+  i = i || { id:BK.uid(), type:'intervention', statut:'planifiee', photos:[], commentaire:'', devisPdf:false, recurrent:false, dur:2, start:'09:00', date:(mode==='jour'?dayIso:BK.todayIso()), techs:[], agence:'', occupant:'', tel:'', adresse:'', ville:'Istres', travaux:'' };
+  if(demande){ Object.assign(i,{ agence:'Particulier', occupant:demande.nom, tel:demande.tel, ville:demande.ville, travaux:demande.service+' — '+demande.message }); }
+  openDrawer(`<header><h2>${isNew?'Nouvelle intervention':'Modifier l’intervention'}</h2><button class="x" aria-label="Fermer">×</button></header>
+  <form class="body" id="f"><div class="form">
+    <label class="full">Type<select name="type"><option value="intervention">Intervention</option><option value="interne" ${i.type==='interne'?'selected':''}>Tâche interne (réunion, matériel…)</option></select></label>
+    <label>Date<input type="date" name="date" value="${i.date}" required></label>
+    <label>Heure<input type="time" name="start" value="${i.start}" step="900" required></label>
+    <label>Durée (h)<input type="number" name="dur" value="${i.dur}" min="0.5" step="0.5"></label>
+    <label>Ville<input name="ville" value="${E(i.ville)}"></label>
+    <div class="full"><div style="font-size:13px;font-weight:700;color:var(--mute);margin-bottom:6px">Technicien(s) — plusieurs = binôme</div><div class="checks">${s.techs.map(t=>`<label><input type="checkbox" name="techs" value="${t.id}" ${i.techs.includes(t.id)?'checked':''}><i style="width:10px;height:10px;border-radius:50%;background:${t.couleur}"></i>${t.nom}</label>`).join('')}</div></div>
+    <label class="full">Adresse<input name="adresse" value="${E(i.adresse)}"></label>
+    <label>Agence / client<input name="agence" value="${E(i.agence)}" list="agences"></label>
+    <label>Occupant<input name="occupant" value="${E(i.occupant)}"></label>
+    <label class="full">Téléphone de l’occupant<input name="tel" type="tel" value="${E(i.tel)}"></label>
+    <label class="full">Travaux à effectuer<textarea name="travaux">${E(i.travaux)}</textarea></label>
+    <label class="full inline"><input type="checkbox" name="recurrent" ${i.recurrent?'checked':''}> Intervention récurrente (contrat d’entretien)</label>
+  </div><datalist id="agences">${[...new Set(s.interventions.map(x=>x.agence))].map(a=>`<option value="${E(a)}">`).join('')}</datalist></form>
+  <footer><button class="btn primary" form="f" type="submit">${isNew?'Planifier':'Enregistrer'}</button><button class="btn" type="button" id="cancel">Annuler</button></footer>`);
+  $('#cancel').onclick=closeDrawer;
+  $('#f').onsubmit=e=>{
+    e.preventDefault(); const fd=new FormData(e.target);
+    const techs=fd.getAll('techs'); if(!techs.length){ toast('Choisissez au moins un technicien'); return; }
+    Object.assign(i,{ type:fd.get('type'), date:fd.get('date'), start:fd.get('start'), dur:Number(fd.get('dur'))||1, ville:fd.get('ville'), techs, adresse:fd.get('adresse'), agence:fd.get('agence'), occupant:fd.get('occupant'), tel:fd.get('tel'), travaux:fd.get('travaux'), recurrent:!!fd.get('recurrent') });
+    if(isNew) s.interventions.push(i);
+    if(demande){ const d=s.demandes.find(x=>x.id===demande.id); if(d) d.traitee=true; }
+    BK.save(s); closeDrawer(); view='planning'; mode='semaine'; weekStart=BK.monday(new Date(i.date+'T12:00')); render();
+    toast(`Planifiée pour ${techs.map(x=>BK.tech(x).nom).join(' + ')} — visible sur son iPad`);
+  };
+}
+
+/* ---------- À contrôler ---------- */
+function controle(){
+  const s=S(), items=s.interventions.filter(i=>i.statut==='controle').sort((a,b)=>b.date.localeCompare(a.date));
+  $('#main').innerHTML = `<div class="head"><h1>À contrôler</h1></div><div class="hint">✅ <span>Les interventions validées par les techniciens arrivent ici avec leurs photos et commentaires. Seul le bureau peut les clôturer.</span></div>` +
+   (items.length ? `<div class="list">${items.map(i=>`<div class="row"><div><h3>${E(i.adresse)}, ${E(i.ville)}</h3><div class="meta">${BK.label(i.date,true)} · ${i.techs.map(x=>BK.tech(x).nom).join(' + ')} · ${E(i.agence)}</div><div class="comment">${E(i.commentaire)}</div><div class="photos">${i.photos.map(p=>`<img src="${p}" alt="Photo">`).join('')}</div></div><div class="acts"><button class="btn" data-open="${i.id}">Détails</button><button class="btn ok" data-close="${i.id}">✓ Clôturer</button></div></div>`).join('')}</div>` : `<div class="empty">Rien à contrôler pour le moment 👌</div>`);
+  document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openDetail(b.dataset.open));
+  document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>{ const i=s.interventions.find(x=>x.id===b.dataset.close); i.statut='cloturee'; BK.save(s); render(); toast('Clôturée — archivée dans l’historique'); });
+}
+
+/* ---------- Demandes du site ---------- */
+function demandes(){
+  const s=S(), items=[...s.demandes].sort((a,b)=>(a.traitee-b.traitee)||b.date.localeCompare(a.date));
+  $('#main').innerHTML = `<div class="head"><h1>Demandes du site</h1><a class="btn" href="site.html#devis" target="_blank">Ouvrir le site vitrine ↗</a></div><div class="hint">🌐 <span>Chaque demande de devis faite sur le site arrive ici automatiquement. Un clic pour la planifier.</span></div>` +
+    (items.length ? `<div class="list">${items.map(d=>`<div class="row" style="${d.traitee?'opacity:.55':''}"><div><h3>${E(d.nom)} · ${E(d.ville)}</h3><div class="meta">${BK.label(d.date,true)} · ${E(d.service)} · <a href="tel:${E(d.tel)}">${E(d.tel)}</a></div><div class="comment">${E(d.message)}</div></div><div class="acts">${d.traitee?'<span class="pill cloturee">Planifiée</span>':`<button class="btn orange" data-plan="${d.id}">Planifier</button>`}</div></div>`).join('')}</div>` : `<div class="empty">Aucune demande pour le moment.</div>`);
+  document.querySelectorAll('[data-plan]').forEach(b=>b.onclick=()=>openForm(null, s.demandes.find(d=>d.id===b.dataset.plan)));
+}
+
+/* ---------- Historique ---------- */
+function historique(){
+  $('#main').innerHTML = `<div class="head"><h1>Historique</h1></div>
+   <div class="search"><input id="q" placeholder="Rechercher une adresse, une agence, un occupant… (ex. : 27 avenue de la Crau)" value="${E(q)}" autocomplete="off"></div><div id="res"></div>`;
+  const run=()=>{
+    const s=S(), k=q.trim().toLowerCase();
+    let items=s.interventions.filter(i=>i.statut==='cloturee'||i.statut==='controle');
+    if(k) items=s.interventions.filter(i=>[i.adresse,i.ville,i.agence,i.occupant,i.travaux].join(' ').toLowerCase().includes(k));
+    items.sort((a,b)=>b.date.localeCompare(a.date));
+    $('#res').innerHTML = items.length ? `<div class="meta" style="color:var(--mute);margin:0 0 12px">${items.length} intervention(s)${k?' pour « '+E(q)+' »':''}, conservées sur plusieurs années pour le SAV</div><div class="timeline">${items.map(i=>`<div class="row"><div><span class="pill ${i.statut}">${BK.STATUTS[i.statut]}</span><h3 style="margin-top:6px">${E(i.adresse)}, ${E(i.ville)}</h3><div class="meta">${BK.label(i.date,true)} · ${i.techs.map(x=>BK.tech(x).nom).join(' + ')} · ${E(i.agence)}</div><div style="margin-top:8px">${E(i.travaux)}</div>${i.commentaire?`<div class="comment">${E(i.commentaire)}</div>`:''}<div class="photos">${i.photos.map(p=>`<img src="${p}" alt="Photo">`).join('')}</div></div><div class="acts"><button class="btn" data-open="${i.id}">Ouvrir</button></div></div>`).join('')}</div>` : `<div class="empty">Aucun résultat.</div>`;
+    document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openDetail(b.dataset.open));
+  };
+  $('#q').oninput=e=>{ q=e.target.value; run(); }; run();
+}
+
+document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>{ view=b.dataset.view; render(); });
+$('#reset').onclick=e=>{ e.preventDefault(); BK.reset(); render(); toast('Démo réinitialisée'); };
+BK.onChange(()=>{ render(); toast('Mise à jour reçue en temps réel'); });
+const h=location.hash.slice(1); if(['planning','controle','demandes','historique'].includes(h)) view=h;
+render();
+</script>
+</body>
+</html>
