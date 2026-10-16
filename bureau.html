@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex">
 <title>Bureau · Planning BK+ (démo)</title>
 <link rel="icon" href="favicon.svg">
-<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="app.css?v=3">
 <style>
 .app{display:grid;grid-template-columns:232px 1fr;min-height:calc(100vh - 38px)}
 .side{background:#fff;border-right:1px solid var(--line);padding:18px 12px;display:flex;flex-direction:column;gap:4px}
@@ -175,7 +175,7 @@
 <aside class="drawer" id="drawer" aria-hidden="true"></aside>
 <div class="toast" id="toast"></div>
 
-<script src="data.js"></script>
+<script src="data.js?v=3"></script>
 <script>
 const $ = s => document.querySelector(s), E = BK.esc;
 let view = 'planning', mode = 'semaine', weekStart = BK.monday(new Date(BK.todayIso())), dayIso = BK.todayIso(), q = '';

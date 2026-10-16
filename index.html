@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex">
 <title>BK+ · Démo de votre application</title>
 <link rel="icon" href="favicon.svg">
-<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="app.css?v=3">
 <style>
 body{background:var(--navy);color:#fff;min-height:100vh}
 .wrap{max-width:1100px;margin:0 auto;padding:56px 20px 64px}
@@ -55,7 +55,7 @@ h1 em{font-style:normal;color:#FFB98A}
   </div>
   <div class="note"><span>Conseil : ouvrez le bureau et l’iPad dans deux onglets côte à côte, les mises à jour arrivent en direct.</span><a href="#" id="reset">Réinitialiser la démo</a></div>
 </div>
-<script src="data.js"></script>
+<script src="data.js?v=3"></script>
 <script>document.getElementById('reset').onclick=e=>{e.preventDefault();BK.reset();e.target.textContent='Démo réinitialisée ✓';};</script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
 </body>
