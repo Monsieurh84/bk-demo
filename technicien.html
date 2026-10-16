@@ -203,6 +203,48 @@ body.native .top{padding-top:calc(14px + env(safe-area-inset-top))!important}
   .need span{font-size:14px;padding:6px 10px}
   .binome{font-size:16px}
 }
+
+/* v2 : tâches épinglées, rappel, équipes, pièces jointes, matériel, GPS */
+.teamline{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:15px;font-weight:800;color:var(--navy)}
+.teamline .av,.pin .av,.binome .av{width:26px;height:26px;font-size:12px}
+.pins{background:#FFFBEB;border:2px solid #FDE68A;border-radius:22px;padding:16px;margin-bottom:16px}
+.pins h2{margin:0;font-size:20px;display:flex;justify-content:space-between;align-items:center;color:#78350F}
+.pins h2 span{font-size:15px;background:#fff;border-radius:999px;padding:4px 12px}
+.pins>p{margin:4px 0 12px;color:#92400E;font-weight:600;font-size:15px}
+.pin{background:#fff;border-radius:16px;padding:14px;margin-top:10px;border:2px solid #FDE68A}
+.pin .pt{font-size:19px;font-weight:800;line-height:1.3}
+.pin .pm{font-size:15px;color:var(--mute);font-weight:600;margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pin .pa{display:flex;gap:10px;margin-top:12px}
+.pin .pa button{flex:1;height:60px;border-radius:16px;border:0;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--blue-50);color:var(--blue)}
+.pin .pa button svg{width:22px;height:22px}
+.pin .pa .pdone{background:var(--ok);color:#fff}
+.pin.ok{opacity:.65;border-color:#A7E3C9}
+.pin.mini{padding:10px 14px;margin:0 0 10px;background:#FFFBEB}
+.pin.mini .pt{font-size:16px}
+.remind{display:flex;gap:12px;align-items:center;background:var(--err);color:#fff;border-radius:20px;padding:16px 18px;margin-bottom:14px;font-size:30px;animation:shake .4s}
+.remind div{font-size:17px;font-weight:600}
+.remind b{display:block;font-size:19px}
+.mat{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.mat label{display:flex;align-items:center;gap:12px;font-size:19px;font-weight:700;border:2px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer}
+.mat input{width:28px;height:28px;accent-color:var(--ok);flex:none}
+.mat label:has(input:checked){border-color:var(--ok);background:var(--ok-50);color:#065F46}
+.docs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.docs button{border:2px solid var(--line);background:#fff;border-radius:14px;padding:0;overflow:hidden;text-align:left;font-weight:800;font-size:14px}
+.docs .m{height:90px;background:#E8ECF2;display:grid;place-items:center;font-size:32px;background-size:cover;background-position:center;position:relative}
+.docs .m.v::after{content:'▶';position:absolute;width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;display:grid;place-items:center;font-size:18px}
+.docs span{display:block;padding:8px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sheet{position:absolute;inset:0;background:rgba(11,35,64,.45);z-index:40;display:none;align-items:flex-end}
+.sheet.on{display:flex}
+.sheet .in{background:#fff;width:100%;border-radius:26px 26px 0 0;padding:18px 18px calc(22px + env(safe-area-inset-bottom))}
+.sheet h3{margin:0 0 4px;font-size:20px}
+.sheet p{margin:0 0 14px;color:var(--mute);font-weight:600}
+.sheet .apps{display:grid;gap:10px}
+.sheet .apps a{height:68px;border-radius:18px;display:flex;align-items:center;gap:14px;padding:0 18px;font-size:20px;font-weight:800;text-decoration:none;color:var(--ink);border:2px solid var(--line)}
+.sheet .apps a i{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-style:normal;font-size:20px;color:#fff}
+.sheet label{display:flex;align-items:center;gap:10px;margin:14px 2px 6px;font-weight:700;font-size:16px}
+.sheet label input{width:24px;height:24px}
+.sheet .cancel{width:100%;height:56px;border-radius:16px;border:0;background:var(--bg);font-weight:800;font-size:18px;margin-top:8px}
+@container scr (max-width:520px){ .docs{grid-template-columns:repeat(2,1fr)} .pin .pt{font-size:17px} .mat label{font-size:17px} .teamline{font-size:14px} }
 </style>
 </head>
 <body>
@@ -221,6 +263,7 @@ body.native .top{padding-top:calc(14px + env(safe-area-inset-top))!important}
         <li>Photo + commentaire (phrases toutes prêtes ou micro), puis Valider.</li>
       </ol></div>
     <button class="btn" id="net">📶 Simuler une coupure de réseau</button>
+    <button class="btn" id="rem">⏰ Simuler 16h30 (rappel des tâches)</button>
     <a class="btn primary" href="bureau.html" target="_blank">Ouvrir l’écran du bureau ↗</a>
     <div class="card" style="margin-top:10px"><h3>Changer de technicien</h3><div class="whos" id="whos"></div></div>
     <div class="card"><h3>Sur votre iPhone ou iPad</h3><div class="qr"><img id="qr" alt="QR code de la démo"><span>Ouvrez ce lien dans Safari, puis Partager → <b>Sur l’écran d’accueil</b> : l’app s’ouvre comme une vraie application, même sans réseau.</span></div></div>
@@ -272,37 +315,50 @@ function bindTop(){
 function list(){
   const s=S(), t=BK.tech(me), today=BK.todayIso();
   const mine=s.interventions.filter(i=>i.techs.includes(me) && i.statut!=='cloturee');
-  const todayJobs=mine.filter(i=>i.date===today && i.type!=='interne').sort((a,b)=>a.start.localeCompare(b.start));
+  const timed=i=>!i.epingle;
+  const todayJobs=mine.filter(i=>i.date===today && i.type!=='interne' && timed(i)).sort((a,b)=>a.start.localeCompare(b.start));
+  const pins=mine.filter(i=>i.date===today && i.epingle);
+  const pinsLeft=pins.filter(i=>i.statut!=='controle');
   const done=todayJobs.filter(i=>i.statut==='controle').length;
   const next=todayJobs.find(i=>i.statut!=='controle');
   const days = tab==='jour' ? [today] : [...Array(6)].map((_,k)=>BK.iso(BK.addDays(BK.monday(new Date(today+'T12:00')),k)));
   const jobHtml=i=>{
-    const sc={planifiee:'#1565D8',enroute:'#6D28D9',encours:'#B45309',controle:'#0E9F6E'}[i.statut]||'#1565D8';
     const label=i.statut==='controle'?'Terminée':BK.STATUTS[i.statut];
-    const other=i.techs.filter(x=>x!==me);
-    return `<button class="job ${i.type==='interne'?'int':''} ${i.statut==='controle'?'done':''}" data-id="${i.id}" style="--sc:${sc}">
+    const team=i.techs.length>1;
+    return `<button class="job ${i.type==='interne'?'int':''} ${i.statut==='controle'?'done':''}" data-id="${i.id}" style="--sc:${BK.stripe(i.techs)}">
       <div class="h">${BK.hh(i.start)}<small>${BK.endTime(i.start,i.dur)}</small></div>
-      <div class="b"><div class="ad">${i.type==='interne'?'Tâche interne':E(i.adresse)}</div><div class="vi">${i.type==='interne'?E(i.travaux):E(i.ville)+(other.length?' · 👥 '+other.map(x=>BK.tech(x).nom).join(', '):'')}${i.statut==='controle'?' · ✓ Terminée':''}</div></div>
+      <div class="b"><div class="ad">${i.type==='interne'?'Tâche interne':E(i.adresse)}</div><div class="vi">${i.type==='interne'?E(i.travaux):E(i.ville)}${i.pieces&&i.pieces.length?' · 📎':''}${i.statut==='controle'?' · ✓ Terminée':''}</div>${team?`<div class="teamline"><span class="avs">${BK.avatars(i.techs)}</span>${i.techs.map(x=>BK.tech(x).nom).join(' + ')}</div>`:''}</div>
       ${i.type==='interne'?'':`<span class="st ${i.statut}">${label}</span>`}<span class="chev">›</span></button>`;
   };
+  const pinHtml=i=>{ const ok=i.statut==='controle'; const others=i.techs.filter(x=>x!==me);
+    return `<div class="pin ${ok?'ok':''}"><div class="pt">${ok?'✓ ':''}${E(i.travaux)}</div><div class="pm">${E(i.adresse)}${i.ville?', '+E(i.ville):''}${others.length?` · avec <span class="avs">${BK.avatars(others)}</span> ${others.map(x=>BK.tech(x).nom).join(', ')}`:''}</div>
+      ${ok?`<div class="pm" style="color:var(--ok);font-weight:800">Fait à ${E(i.doneAt||'')}</div>`:`<div class="pa">${i.adresse&&i.adresse!=='Dépôt BK+'?`<button data-nav="${i.id}">${ICON.route}Itinéraire</button>`:''}<button class="pdone" data-pin="${i.id}">✓ C’est fait</button></div>`}</div>`; };
   const block=d=>{
-    const it=mine.filter(i=>i.date===d).sort((a,b)=>a.start.localeCompare(b.start));
+    const it=mine.filter(i=>i.date===d && timed(i)).sort((a,b)=>a.start.localeCompare(b.start));
+    const pd=mine.filter(i=>i.date===d && i.epingle);
     const abs=s.absences.find(a=>a.tech===me&&a.date===d);
     return (tab==='semaine'?`<div class="daytitle">${BK.label(d,true)}${d===today?' · aujourd’hui':''}</div>`:'') +
       (abs?`<div class="panel"><p>🌴 ${E(abs.label)}</p></div>`:'') +
-      (it.length? it.map(jobHtml).join('') : (abs?'':`<div class="panel"><p style="color:var(--mute)">Rien de prévu.</p></div>`));
+      (tab==='semaine'&&pd.length?pd.map(i=>`<div class="pin mini"><div class="pt">📌 ${E(i.travaux)}</div></div>`).join(''):'') +
+      (it.length? it.map(jobHtml).join('') : (abs||pd.length?'':`<div class="panel"><p style="color:var(--mute)">Rien de prévu.</p></div>`));
   };
+  const late = reminderOn && pinsLeft.length;
   scr.innerHTML = topBar(`Bonjour ${E(t.nom)} 👋`, BK.label(today,true), false) + `<div class="scroll">
+    ${tab==='jour' && late ? `<div class="remind" role="alert">⏰ <div><b>Avant la fin de journée</b>Il reste ${pinsLeft.length} tâche${pinsLeft.length>1?'s':''} à faire aujourd’hui.</div></div>`:''}
     ${tab==='jour' && next ? `<div class="next"><div class="lbl">${next.statut==='planifiee'?'Prochaine intervention':'En ce moment'} · ${BK.hh(next.start)}</div><div class="ad">${E(next.adresse)}</div><div class="vi">${E(next.ville)} · ${E(next.occupant)}</div>
-      <div class="row2"><a href="${telUrl(next.tel)}">${ICON.phone}Appeler</a><a href="${mapsUrl(next)}" target="_blank" rel="noopener">${ICON.route}Itinéraire</a><button class="go" data-id="${next.id}">${ICON.open}Ouvrir</button></div></div>`:''}
-    ${tab==='jour' && todayJobs.length ? `<div class="prog"><span>${done} / ${todayJobs.length} terminées</span><div class="bar"><i style="width:${todayJobs.length?done/todayJobs.length*100:0}%"></i></div></div>`:''}
-    ${tab==='jour' && todayJobs.length && !next ? `<div class="done-box">🎉 Journée terminée, tout est envoyé au bureau.</div>`:''}
+      <div class="row2"><a href="${telUrl(next.tel)}">${ICON.phone}Appeler</a><button data-nav="${next.id}">${ICON.route}Itinéraire</button><button class="go" data-id="${next.id}">${ICON.open}Ouvrir</button></div></div>`:''}
+    ${tab==='jour' && pins.length ? `<div class="pins"><h2>📌 À faire aujourd’hui <span>${pins.length-pinsLeft.length}/${pins.length}</span></h2><p>Pas d’heure précise : quand vous avez un moment dans la journée.</p>${pins.map(pinHtml).join('')}</div>`:''}
+    ${tab==='jour' && todayJobs.length ? `<div class="prog"><span>${done} / ${todayJobs.length} interventions</span><div class="bar"><i style="width:${todayJobs.length?done/todayJobs.length*100:0}%"></i></div></div>`:''}
+    ${tab==='jour' && todayJobs.length && !next && !pinsLeft.length ? `<div class="done-box">🎉 Journée terminée, tout est envoyé au bureau.</div>`:''}
     <div class="tabs"><button data-tab="jour" class="${tab==='jour'?'on':''}">Aujourd’hui</button><button data-tab="semaine" class="${tab==='semaine'?'on':''}">Ma semaine</button></div>
     ${days.map(block).join('')}
-    ${document.body.classList.contains('native')?`<div class="demo-who"><p>Démo : changer de technicien</p><div class="whos">${whos()}</div></div>`:''}
+    ${document.body.classList.contains('native')?`<div class="demo-who"><p>Démo : changer de technicien</p><div class="whos">${whos()}</div><button class="btn" id="rem2" style="margin-top:10px">⏰ Démo : simuler 16h30</button></div>`:''}
   </div>`;
   scr.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>openJob(b.dataset.id));
   scr.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{ tab=b.dataset.tab; render(); });
+  scr.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>navTo(s.interventions.find(x=>x.id===b.dataset.nav)));
+  scr.querySelectorAll('[data-pin]').forEach(b=>b.onclick=()=>{ const i=s.interventions.find(x=>x.id===b.dataset.pin); const before=i.statut; i.statut='controle'; i.doneAt=nowHHMM(); i.commentaire=i.commentaire||'Tâche faite'; persist(s); render(); toast('✓ Tâche faite, le bureau est prévenu',()=>{ i.statut=before; BK.save(s); render(); }); });
+  const r2=$('#rem2'); if(r2) r2.onclick=fireReminder;
   bindWhos(); bindTop();
 }
 function whos(){ return S().techs.map(x=>`<button data-me="${x.id}" class="${x.id===me?'on':''}"><i style="background:${x.couleur}"></i>${x.nom}</button>`).join(''); }
@@ -327,13 +383,15 @@ function fiche(){
     ${done?`<div class="done-box">✓ Terminée et envoyée au bureau</div>`:''}
     ${interne?'':`<div class="step" aria-label="Étapes"><div class="${stepIdx>=0?'on':''}">Prévue</div><div class="${stepIdx>=1?'on':''}">En route</div><div class="${stepIdx>=2?'on':''}">Sur place</div><div class="${stepIdx>=3?'on':''}">Terminée</div></div>`}
     <div class="addr"><div class="a">${E(i.adresse)}</div><div class="v">${E(i.ville)}</div></div>
-    ${others.length?`<div class="binome">👥 En binôme avec ${others.map(x=>BK.tech(x).nom).join(', ')}</div>`:''}
-    ${interne?'':`<div class="big-actions"><a class="bigbtn call" href="${telUrl(i.tel)}">${ICON.phone}Appeler</a><a class="bigbtn route" href="${mapsUrl(i)}" target="_blank" rel="noopener">${ICON.route}Itinéraire</a></div>`}
+    ${others.length?`<div class="binome"><span class="avs">${BK.avatars(i.techs)}</span> En équipe avec ${others.map(x=>BK.tech(x).nom).join(', ')}</div>`:''}
+    ${interne?'':`<div class="big-actions"><a class="bigbtn call" href="${telUrl(i.tel)}">${ICON.phone}Appeler</a><button class="bigbtn route" data-nav="${i.id}">${ICON.route}Itinéraire</button></div>`}
     ${!interne && i.statut==='planifiee'?`<button class="primary-step" id="go">🚐 Je pars</button>`:''}
     ${!interne && i.statut==='enroute'?`<a class="sms" href="sms:${String(i.tel).replace(/\s/g,'')}${iOS?'&':'?'}body=${smsBody}">💬 Prévenir l’occupant par SMS</a><button class="primary-step here" id="here">📍 Je suis sur place</button>`:''}
     ${!interne && i.statut==='encours' && i.startedAt?`<div class="since">⏱ Sur place depuis ${E(i.startedAt)}</div>`:''}
     ${interne?'':`<div class="panel"><dl class="facts"><dt>Occupant</dt><dd>${E(i.occupant)}</dd><dt>Téléphone</dt><dd><a href="${telUrl(i.tel)}">${E(String(i.tel).replace(/(\d{2})(?=\d)/g,'$1 '))}</a></dd><dt>Agence</dt><dd>${E(i.agence)}</dd><dt>Horaires</dt><dd>${BK.hh(i.start)} – ${BK.endTime(i.start,i.dur)}</dd></dl></div>`}
     <div class="panel"><h3>🔧 Travaux à faire</h3><p>${E(i.travaux)}</p></div>
+    ${i.materiel&&i.materiel.length?`<div class="panel"><h3>🧰 Matériel à prendre</h3><ul class="mat">${i.materiel.map((m,k)=>`<li><label><input type="checkbox" data-mat="${k}" ${(matChk[i.id]||{})[k]?'checked':''}>${E(m)}</label></li>`).join('')}</ul></div>`:''}
+    ${i.pieces&&i.pieces.length?`<div class="panel"><h3>📎 Documents du bureau</h3><div class="docs">${i.pieces.map((p,k)=>`<button data-doc="${k}"><div class="m ${p.kind==='video'?'v':''}" style="${p.kind==='photo'&&p.src?`background-image:url('${p.src}')`:''}">${p.kind==='pdf'?'📄':p.kind==='video'&&!p.src.startsWith('blob:')?'🎬':''}</div><span>${E(p.name)}</span></button>`).join('')}</div></div>`:''}
     ${hist.length?`<div class="panel"><h3>🕘 Déjà venu à cette adresse</h3>${hist.map(h=>`<div class="hist"><b>${BK.label(h.date,true)} · ${h.techs.map(x=>BK.tech(x).nom).join(' + ')}</b><div>${E(h.travaux)}${h.commentaire?' — '+E(h.commentaire):''}</div>${h.photos.length?`<div class="ph">${h.photos.map(p=>`<img src="${typeof p==='string'?p:p.src}" alt="Photo précédente" data-lb>`).join('')}</div>`:''}</div>`).join('')}</div>`:''}
     ${interne?'':`
     <div class="panel"><h3>📷 Photos</h3>
@@ -347,8 +405,15 @@ function fiche(){
   ${done||interne?'':`<div class="validate"><div class="alert" id="alert" role="alert"></div><div class="need"><span id="n1">○ 1 photo minimum</span><span id="n2">○ Un commentaire</span></div><button id="ok">Valider l’intervention</button></div>`}
   <div class="lb" id="lb"><img alt=""><button aria-label="Fermer">×</button></div>`;
   bindTop();
-  scr.querySelectorAll('[data-lb]').forEach(img=>img.onclick=()=>{ const lb=$('#lb'); lb.querySelector('img').src=img.src; lb.classList.add('on'); });
-  $('#lb').onclick=()=>$('#lb').classList.remove('on');
+  scr.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>navTo(i));
+  scr.querySelectorAll('[data-mat]').forEach(c=>c.onchange=()=>{ (matChk[i.id]=matChk[i.id]||{})[c.dataset.mat]=c.checked; });
+  scr.querySelectorAll('[data-doc]').forEach(b=>b.onclick=()=>{ const p=i.pieces[+b.dataset.doc]; const lb=$('#lb');
+    if(p.kind==='photo'){ lb.innerHTML=`<img src="${p.src}" alt=""><button aria-label="Fermer">×</button>`; lb.classList.add('on'); }
+    else if(p.kind==='video' && p.src){ lb.innerHTML=`<video src="${p.src}" controls autoplay playsinline style="max-width:100%;max-height:100%;border-radius:12px"></video><button aria-label="Fermer">×</button>`; lb.classList.add('on'); }
+    else if(p.src){ window.open(p.src,'_blank'); }
+    else toast('Démo : le fichier « '+p.name+' » s’ouvrira ici'); });
+  scr.querySelectorAll('[data-lb]').forEach(img=>img.onclick=()=>{ const lb=$('#lb'); lb.innerHTML=`<img src="${img.src}" alt=""><button aria-label="Fermer">×</button>`; lb.classList.add('on'); });
+  $('#lb').onclick=e=>{ if(e.target.tagName==='VIDEO') return; const lb=$('#lb'); lb.classList.remove('on'); lb.innerHTML=''; };
   const go=$('#go'); if(go) go.onclick=()=>{ i.statut='enroute'; persist(s); fiche(); toast('Le bureau voit que vous êtes en route'); };
   const here=$('#here'); if(here) here.onclick=()=>{ i.statut='encours'; i.startedAt=nowHHMM(); persist(s); fiche(); toast('Arrivée enregistrée à '+i.startedAt); };
   if(done||interne) return;
@@ -403,6 +468,30 @@ document.querySelectorAll('[data-dev]').forEach(b=>b.onclick=()=>setDevice(b.dat
 setDevice(new URLSearchParams(location.search).get('d')==='iphone'?'iphone':'ipad');
 $('#qr').src='https://api.qrserver.com/v1/create-qr-code/?size=192x192&margin=0&data='+encodeURIComponent(location.origin+location.pathname);
 
+/* ---------- GPS : Waze, Plans ou Google Maps ---------- */
+let navPref=null; try{ navPref=localStorage.getItem('bk-nav'); }catch(e){}
+const NAV={ waze:{n:'Waze',c:'#33CCFF',e:'🚙',u:q=>'https://waze.com/ul?q='+q+'&navigate=yes'}, plans:{n:'Plans (Apple)',c:'#34C759',e:'🗺',u:q=>'https://maps.apple.com/?daddr='+q}, google:{n:'Google Maps',c:'#4285F4',e:'📍',u:q=>'https://www.google.com/maps/dir/?api=1&destination='+q} };
+function navTo(i){
+  if(!i) return; const q=encodeURIComponent(i.adresse+', '+i.ville);
+  if(navPref && NAV[navPref]){ window.open(NAV[navPref].u(q),'_blank'); toast('Ouverture de '+NAV[navPref].n+'…'); return; }
+  let sh=scr.querySelector('.sheet'); if(!sh){ sh=document.createElement('div'); sh.className='sheet'; scr.appendChild(sh); }
+  sh.innerHTML=`<div class="in"><h3>Itinéraire</h3><p>${E(i.adresse)}, ${E(i.ville)}</p><div class="apps">${Object.entries(NAV).map(([k,v])=>`<a href="${v.u(q)}" target="_blank" rel="noopener" data-app="${k}"><i style="background:${v.c}">${v.e}</i>${v.n}</a>`).join('')}</div><label><input type="checkbox" id="rememb" checked> Toujours utiliser cette application</label><button class="cancel">Annuler</button></div>`;
+  sh.classList.add('on');
+  sh.onclick=e=>{ if(e.target===sh||e.target.classList.contains('cancel')) sh.classList.remove('on'); };
+  sh.querySelectorAll('[data-app]').forEach(a=>a.onclick=()=>{ if($('#rememb').checked){ navPref=a.dataset.app; try{localStorage.setItem('bk-nav',navPref)}catch(e){} } sh.classList.remove('on'); });
+}
+/* ---------- Rappel avant la fin de journée ---------- */
+let reminderOn=false; const matChk={};
+function pinsLeftFor(){ const t=BK.todayIso(); return S().interventions.filter(i=>i.epingle && i.date===t && i.techs.includes(me) && i.statut!=='controle'); }
+function fireReminder(){
+  reminderOn=true; const left=pinsLeftFor(); openId=null; tab='jour'; render();
+  if(!left.length){ toast('Rappel 16h30 : toutes les tâches du jour sont faites ✓'); return; }
+  toast('⏰ Rappel : '+left.length+' tâche'+(left.length>1?'s':'')+' à faire avant ce soir');
+  try{ if(navigator.vibrate) navigator.vibrate([200,100,200]); }catch(e){}
+  try{ if('Notification' in window){ const show=()=>new Notification('BK+ · Tâches du jour',{body:left.map(x=>'• '+x.travaux).join('\n'),icon:'icon-192.png'}); if(Notification.permission==='granted') show(); else if(Notification.permission!=='denied') Notification.requestPermission().then(p=>{ if(p==='granted') show(); }); } }catch(e){}
+}
+$('#rem').onclick=fireReminder;
+setInterval(()=>{ const d=new Date(); if(!reminderOn && (d.getHours()>16 || (d.getHours()===16 && d.getMinutes()>=30)) && pinsLeftFor().length) fireReminder(); }, 60000);
 function render(){ scr.classList.toggle('sunmode',sun); openId?fiche():list(); bindWhos(); }
 render();
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
